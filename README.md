@@ -1,6 +1,6 @@
 # Track Driver AI
 
-Track Driver AI is a system that allows for easy creation, management and usage of driving recordings and models
+Track Driver AI is a system that allows for easy creation, management and usage of driving recordings and trained AI driver models.
 
 ## Installation
 
