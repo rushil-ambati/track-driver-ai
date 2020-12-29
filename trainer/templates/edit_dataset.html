@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block title %}Trainer - Editing {{ dataset_to_update.name }}{% endblock %}
+{% block content %}
+<div class="container">
+    <h1>Edit Dataset</h1>
+    <br>
+    <a href="/datasets" class="btn btn-outline-dark float-right btn-sm">Back</a>
+    <br>
+    <form action="/edit_dataset/{{ dataset_to_update.id }}" method="POST">
+        <label for="name">Dataset folder name</label>
+        <datalist id="folders">
+            {% for folder in folders %}
+            <option value="{{ folder }}">
+                {% endfor %}
+        </datalist>
+        <input list="folders" required class="form-control" placeholder="Enter name" id="name" name="name"
+            value="{{ dataset_to_update.name }}">
+        <br>
+
+        <label for="track">Track number</label>
+        <input type="number" min="1" max="3" required class="form-control" placeholder="Enter track" id="track"
+            name="track" value="{{ dataset_to_update.track }}">
+        <br>
+
+        <label for="comment">Comment</label>
+        <input type="text" class="form-control" placeholder="Enter comment" id="comment" name="comment"
+            value="{{ dataset_to_update.comment }}">
+        <br>
+
+        <input type="submit" value="Update" class="btn btn-primary">
+    </form>
+</div>
+{% endblock %}

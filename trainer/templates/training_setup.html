@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+{% block title %}Trainer - Training {{ dataset_to_train.name }}{% endblock %}
+{% block content %}
+<div class="container">
+    <h1>Training Setup</h1>
+    <h2>Options</h2>
+    <small><b>Refresh page to return values to default</b></small><br><br>
+    <form action="/train/{{ dataset_to_train.id }}" method="POST">
+        <h3>Data Balancing</h3>
+
+        <label for="num_bins">Number of bins</label>
+        <input type="number" min="1" required class="form-control" name="num_bins" id="num_bins" value="25">
+        <small>Number of steering angle groupings to make</small>
+        <br><br>
+
+        <label for="max_samples_per_bin">Maximum samples per bin</label>
+        <input type="number" min="1" required class="form-control" name="max_samples_per_bin" id="max_samples_per_bin"
+            value="400">
+        <small>Maximum number of datapoints in each grouping</small>
+        <br><br>
+
+        <h3>Generating Labelled Data</h3>
+        <label for="validation_proportion">Validation proportion</label>
+        <input type="number" min="0" max="1" step="any" required class="form-control" name="validation_proportion"
+            id="validation_proportion" value="0.2">
+        <small>Proportion of dataset that will be set aside and used for validation throughout training</small>
+        <br><br>
+
+        <h3>Augmenter</h3>
+        <label for="p">Probability of augmentation</label>
+        <input type="number" min="0" max="1" step="any" required class="form-control" name="p" id="p" value="0.5">
+        <small>Probability of any image passed in to be given any of the augmentations</small>
+        <br><br>
+
+        <input class="form-check-input" type="hidden" value="1" name="aug_pan" id="aug_pan"><input type="checkbox"
+            checked onclick="this.previousSibling.value=1-this.previousSibling.value">
+        <label class="form-check-label" for="aug_pan">
+            Pan
+        </label>
+        <small> - Whether or not the augmenter can pan the image</small>
+        <br>
+
+        <input class="form-check-input" type="hidden" value="1" name="aug_zoom" id="aug_zoom"><input type="checkbox"
+            checked onclick="this.previousSibling.value=1-this.previousSibling.value">
+        <label class="form-check-label" for="aug_zoom">
+            Zoom
+        </label>
+        <small> - Whether or not the augmenter can zoom the image</small>
+        <br>
+
+        <input class="form-check-input" type="hidden" value="1" name="aug_brightness" id="aug_brightness"><input
+            type="checkbox" checked onclick="this.previousSibling.value=1-this.previousSibling.value">
+        <label class="form-check-label" for="aug_brightness">
+            Brightness
+        </label>
+        <small> - Whether or not the augmenter can change the brightness of the image</small>
+        <br>
+
+        <input class="form-check-input" type="hidden" value="1" name="aug_flip" id="aug_flip"><input type="checkbox"
+            checked onclick="this.previousSibling.value=1-this.previousSibling.value">
+        <label class="form-check-label" for="aug_flip">
+            Flip
+        </label>
+        <small> - Whether or not the augmenter can horizontally flip the image</small>
+        <br><br>
+
+        <h3>Batch Generator</h3>
+        <label for="batch_size">Batch size</label>
+        <input type="number" min="1" required class="form-control" name="batch_size" id="batch_size" value="100">
+        <small>Size of training batches</small>
+        <br><br>
+
+        <h3>Training</h3>
+        <label for="learning_rate">Learning rate</label>
+        <input type="number" min="0" step="any" required class="form-control" name="learning_rate" id="learning_rate"
+            value="0.001">
+        <small>Step size, amount that weights are updated during training</small>
+        <br><br>
+
+        <label for="epochs">Epochs</label>
+        <input type="number" min="1" required class="form-control" name="epochs" id="epochs" value="10">
+        <small>Number of training epochs</small>
+        <br><br>
+
+        <label for="steps_per_epoch">Steps per epoch</label>
+        <input type="number" min="1" required class="form-control" name="steps_per_epoch" id="steps_per_epoch"
+            value="300">
+        <small>Number of batch generator iterations before a training epoch is considered finished</small>
+        <br><br>
+
+        <label for="validation_steps">Validation steps</label>
+        <input type="number" min="1" required class="form-control" name="validation_steps" id="validation_steps"
+            value="200">
+        <small>Similar to steps_per_epoch but for validation set, so lower</small>
+        <br><br>
+
+        <input type="submit" value="Start Training" class="btn btn-primary float-right">
+        <br><br>
+    </form>
+</div>
+{% endblock %}

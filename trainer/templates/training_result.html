@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block title %}Trainer - Finished Training{% endblock %}
+{% block content %}
+<div class="container">
+    <h1>Finished Training</h1>
+
+    <h2>Training Output</h2>
+    {% for line in output %}
+    <p>{{ line }}</p>
+    {% endfor %}
+    <br><br>
+
+    <h2>Loss Graph</h2>
+    <img src="/static/loss.png">
+    <br><br>
+
+    <a href="/models" class="btn btn-success float-right">Finish</a>
+    <br><br>
+</div>
+{% endblock %}

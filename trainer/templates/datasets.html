@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+{% block title %}Trainer - Datasets{% endblock %}
+{% block content %}
+<div class="container">
+    <h1>Dataset Manager</h1>
+    <br>
+    <a href="/add_dataset" class="btn btn-info float-right">
+        Add dataset
+    </a>
+    <br>
+    <br>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th scope="col">Name</th>
+                <th scope="col">Track</th>
+                <th scope="col">Comment</th>
+                <th scope="col">Train</th>
+                <th scope="col">Edit</th>
+                <th scope="col">Train</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for dataset in datasets %}
+            <tr>
+                <td>
+                    {{ dataset.name }}
+                </td>
+                <td>
+                    <span>
+                        {{ dataset.track }}
+                    </span>
+                </td>
+                <td>
+                    <span>
+                        {{ dataset.comment }}
+                    </span>
+                </td>
+                <td align="center">
+                    <span>
+                        <a href="/train/{{ dataset.id }}" class="btn btn-success"><i class="fa fa-sign-in"></i></a>
+                    </span>
+                </td>
+                <td align="center">
+                    <span>
+                        <a href="/edit_dataset/{{ dataset.id }}" class="btn btn-warning"><i class="fa fa-edit"></i></a>
+                    </span>
+                </td>
+                <td align="center">
+                    <span>
+                        <button class="btn btn-danger" data-toggle="modal"
+                            data-target="#deleteConfirm{{ dataset.id }}"><i class="fa fa-trash"></i></button>
+                    </span>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% for dataset in datasets %}
+<div class="modal fade" id="deleteConfirm{{ dataset.id }}" tabindex="-1" role="dialog"
+    aria-labelledby="deleteConfirm{{ dataset.id }}" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Confirm Deletion - {{ dataset.name }}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Doing this will delete your dataset folder on disk.
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <a href="/delete_dataset/{{ dataset.id }}" type="button" class="btn btn-danger">Confirm</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endfor %}
+{% endblock %}

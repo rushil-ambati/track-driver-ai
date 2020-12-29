@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+{% block title %}Trainer - Editing {{ model_to_update.name }}{% endblock %}
+{% block content %}
+<div class="container">
+    <h1>Edit Model</h1>
+    <div style="width: 50%; float: left;">
+        <br>
+        <a href="/models" class="btn btn-outline-dark float-right btn-sm">Back</a>
+        <br>
+        <form action="/edit_model/{{ model_to_update.id }}" method="POST">
+            <label for="name">Model file name</label>
+            <datalist id="files">
+                {% for file in files %}
+                <option value="{{ file }}">
+                    {% endfor %}
+            </datalist>
+            <input list="files" required class="form-control" placeholder="Enter name" id="name" name="name"
+                value="{{ model_to_update.name }}">
+            <br>
+
+            <label for="comment">Comment</label>
+            <input type="text" class="form-control" placeholder="Enter comment" id="comment" name="comment"
+                value="{{ model_to_update.comment }}">
+            <br>
+
+            <input type="submit" value="Update" class="btn btn-primary float-right">
+        </form>
+    </div>
+    <div style="margin-left: 55%;">
+        <h2>Model Info</h2>
+        <h3>Parent Dataset</h3>
+        <p>Name: {{ parent_dataset.name }}</p>
+        <p>Track: {{ parent_dataset.track }}</p>
+        <p>Comment: {{ parent_dataset.comment }}</p>
+        <br>
+
+        <h3>Training Parameters</h3>
+        <p>Number of bins: {{ params["num_bins"] }}</p>
+        <p>Maximum samples per bin: {{ params["max_samples_per_bin"] }}</p>
+        <p>Validation proportion: {{ params["validation_proportion"] }}</p>
+        <p>Probability of augmentation: {{ params["p"] }}</p>
+        {% if params["aug_pan"] == "1" %}
+        <p>Pan augmentation: On</p>
+        {% else %}
+        <p>Pan augmentation: Off</p>
+        {% endif %}
+        {% if params["aug_zoom"] == "1" %}
+        <p>Zoom augmentation: On</p>
+        {% else %}
+        <p>Zoom augmentation: Off</p>
+        {% endif %}
+        {% if params["aug_brightness"] == "1" %}
+        <p>Brightness augmentation: On</p>
+        {% else %}
+        <p>Brightness augmentation: Off</p>
+        {% endif %}
+        {% if params["aug_flip"] == "1" %}
+        <p>Flip augmentation: On</p>
+        {% else %}
+        <p>Flip augmentation: Off</p>
+        {% endif %}
+        <p>Batch size: {{ params["batch_size"] }}</p>
+        <p>Learning rate: {{ params["learning_rate"] }}</p>
+        <p>Epochs: {{ params["epochs"] }}</p>
+        <p>Steps per epoch: {{ params["steps_per_epoch"] }}</p>
+        <p>Validation steps: {{ params["validation_steps"] }}</p>
+    </div>
+</div>
+{% endblock %}
