@@ -12,7 +12,7 @@ Install simulator from [here](https://github.com/udacity/self-driving-car-sim) (
 ### System
 Clone this repository:
 ```bash
-git clone https://github.com/rushil-ambati/track-driver-ai`
+git clone https://github.com/rushil-ambati/track-driver-ai
 ```
 
 Then install dependencies:
