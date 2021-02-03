@@ -18,7 +18,8 @@ import cv2 # Computer Vision
 
 
 '''Parameters'''
-model_name = "model_name.h5" # Name of model file on disk, in same directory as program
+model_name = "test_model.h5" # Name of model file on disk, in same directory as program
+# (test_model.h5 in this directory has been trained on around 5 laps of track 1)
 
 speed_limit = 32 # Maximum speed of vehicle
 

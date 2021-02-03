@@ -15,235 +15,7 @@
 
 ## **Table of contents**
 
-   * [Track Driver AI](#track-driver-ai)
-      * [<strong>Table of contents</strong>](#table-of-contents)
-   * [Analysis](#analysis)
-      * [Background](#background)
-      * [Problem Statement](#problem-statement)
-      * [Problem Decomposition](#problem-decomposition)
-         * [Autonomy Levels](#autonomy-levels)
-         * [Stages of the Driving Problem](#stages-of-the-driving-problem)
-            * [Static](#static)
-            * [Dynamic](#dynamic)
-            * [Counterfactual](#counterfactual)
-         * [Simulation](#simulation)
-            * [Fidelity](#fidelity)
-            * [Advantages](#advantages)
-            * [Disadvantages](#disadvantages)
-      * [Theory](#theory)
-         * [Computer Vision](#computer-vision)
-         * [Machine Learning](#machine-learning)
-            * [Neural Networks](#neural-networks)
-            * [Deep Learning](#deep-learning)
-            * [Convolutional Neural Networks](#convolutional-neural-networks)
-      * [Research](#research)
-         * [Existing Driving Systems](#existing-driving-systems)
-            * [ALV](#alv)
-            * [ALVINN](#alvinn)
-            * [DAVE-2](#dave-2)
-         * [Existing Trainer/Driver Systems](#existing-trainerdriver-systems)
-      * [Client Discussion](#client-discussion)
-      * [Objectives](#objectives)
-   * [Design](#design)
-      * [Preliminary Considerations](#preliminary-considerations)
-         * [Operational Design Domain](#operational-design-domain)
-            * [Track](#track)
-            * [Urban](#urban)
-         * [Simulators](#simulators)
-            * [Udacity](#udacity)
-            * [CARLA](#carla)
-            * [Choice](#choice)
-            * [Data Collection](#data-collection)
-               * [Images](#images)
-               * [Driving Log](#driving-log)
-         * [Perception](#perception)
-            * [Vision](#vision)
-            * [Point Clouds and Maps](#point-clouds-and-maps)
-            * [Other](#other)
-               * [Radar](#radar)
-               * [Ultrasonic](#ultrasonic)
-               * [Sensor Fusion](#sensor-fusion)
-         * [Planning](#planning)
-            * [Modular Pipeline](#modular-pipeline)
-            * [Monolithic Learning](#monolithic-learning)
-               * [Imitation Learning](#imitation-learning)
-               * [Reinforcement Learning](#reinforcement-learning)
-         * [Control](#control)
-         * [Neural Network](#neural-network)
-               * [Model Complexity](#model-complexity)
-               * [Regularisation](#regularisation)
-               * [Metrics](#metrics)
-         * [ADS Performance](#ads-performance)
-            * [Disengagements](#disengagements)
-            * [Scoring](#scoring)
-      * [Project Scope](#project-scope)
-      * [ADS Architecture](#ads-architecture)
-         * [Perception](#perception-1)
-         * [Planning](#planning-1)
-         * [Control](#control-1)
-      * [Project Summary](#project-summary)
-      * [Standalone System](#standalone-system)
-         * [Training](#training)
-            * [Structure](#structure)
-               * [Network Architecture](#network-architecture)
-            * [Operation](#operation)
-               * [Data Reading](#data-reading)
-               * [Data Balancing](#data-balancing)
-               * [Generating Labelled Data](#generating-labelled-data)
-               * [Image Preprocessing](#image-preprocessing)
-               * [Augmenter](#augmenter)
-               * [Batch Generator](#batch-generator)
-               * [Model](#model)
-         * [Driving](#driving)
-            * [Structure](#structure-1)
-            * [Operation](#operation-1)
-               * [Model Inference](#model-inference)
-               * [Throttle Calculation](#throttle-calculation)
-               * [Simulator Communication](#simulator-communication)
-      * [Trainer](#trainer)
-         * [Structure](#structure-2)
-         * [Operation](#operation-2)
-            * [Database](#database)
-               * [Schema Diagram](#schema-diagram)
-            * [Page Structure](#page-structure)
-               * [Home](#home)
-               * [Datasets](#datasets)
-               * [Training Wizard](#training-wizard)
-               * [Model Manager](#model-manager)
-            * [Backend](#backend)
-            * [Flowchart](#flowchart)
-      * [Driver](#driver)
-         * [Structure](#structure-3)
-         * [Operation](#operation-3)
-            * [Layout](#layout)
-            * [Backend](#backend-1)
-            * [Flowchart](#flowchart-1)
-   * [Implementation](#implementation)
-         * [Standalone System](#standalone-system-1)
-            * [Training](#training-1)
-               * [Imports](#imports)
-               * [Data Reading](#data-reading-1)
-                  * [Importing CSV File](#importing-csv-file)
-                  * [Cleaning Data](#cleaning-data)
-               * [Data Balancing](#data-balancing-1)
-                  * [Data Analysis](#data-analysis)
-                  * [Balancing](#balancing)
-               * [Generating Labelled Data](#generating-labelled-data-1)
-                  * [Generating Datapoints](#generating-datapoints)
-                  * [Data Splitting](#data-splitting)
-               * [Image Preprocessing](#image-preprocessing-1)
-               * [Augmenter](#augmenter-1)
-               * [Batch Generator](#batch-generator-1)
-               * [Model](#model-1)
-            * [Driving](#driving-1)
-               * [Imports](#imports-1)
-               * [Parameters](#parameters)
-               * [Functions](#functions)
-                  * [Socket Functions](#socket-functions)
-               * [Program](#program)
-      * [Trainer](#trainer-1)
-         * [Codebase Structure](#codebase-structure)
-            * [File Tree](#file-tree)
-            * [Files](#files)
-            * [Folders](#folders)
-         * [Main App](#main-app)
-            * [Imports](#imports-2)
-            * [Initialisation](#initialisation)
-            * [Database](#database-1)
-               * [Resetting Database](#resetting-database)
-            * [Routes](#routes)
-            * [Program](#program-1)
-         * [Webpages](#webpages)
-               * [Base Template](#base-template)
-            * [Home](#home-1)
-            * [Datasets](#datasets-1)
-               * [Dataset Manager](#dataset-manager)
-               * [Add](#add)
-               * [Edit](#edit)
-               * [Delete](#delete)
-            * [Training](#training-2)
-               * [Setup](#setup)
-               * [Training and Result](#training-and-result)
-                  * [Addendum](#addendum)
-               * [Backend](#backend-2)
-                  * [Addendum](#addendum-1)
-            * [Models](#models)
-               * [Model Manager](#model-manager-1)
-               * [Edit](#edit-1)
-               * [Delete](#delete-1)
-      * [Driver](#driver-1)
-         * [Imports](#imports-3)
-         * [Main Tkinter App](#main-tkinter-app)
-            * [Controller](#controller)
-            * [Frames](#frames)
-         * [Driving Monitor](#driving-monitor)
-            * [Auxiliary Functions](#auxiliary-functions)
-            * [Driver](#driver-2)
-            * [Drive Function](#drive-function)
-            * [Implementation Discrepancies](#implementation-discrepancies)
-   * [Testing](#testing)
-      * [Standalone System](#standalone-system-2)
-         * [Training Performance](#training-performance)
-            * [Test Plan](#test-plan)
-            * [Test Results](#test-results)
-         * [Driving Performance](#driving-performance)
-            * [Test Plan](#test-plan-1)
-            * [Test Results](#test-results-1)
-            * [Other Comments](#other-comments)
-         * [Objectives](#objectives-1)
-      * [Trainer](#trainer-2)
-         * [Interface Tests](#interface-tests)
-         * [Operation Tests](#operation-tests)
-         * [Validation Tests](#validation-tests)
-         * [Screenshots](#screenshots)
-         * [Objectives](#objectives-2)
-      * [Driver](#driver-3)
-         * [Interface Tests](#interface-tests-1)
-         * [Operation Tests](#operation-tests-1)
-         * [Validation Tests](#validation-tests-1)
-         * [Screenshots](#screenshots-1)
-         * [Objectives](#objectives-3)
-   * [Evaluation](#evaluation)
-      * [ADS](#ads)
-         * [Summary](#summary)
-         * [Extensions](#extensions)
-            * [ODD](#odd)
-            * [Real-world Driving Data](#real-world-driving-data)
-            * [Architecture Variants](#architecture-variants)
-               * [3 Cameras](#3-cameras)
-               * [Recurrent Neural Networks](#recurrent-neural-networks)
-               * [Augmenter](#augmenter-2)
-      * [Trainer](#trainer-3)
-         * [Summary](#summary-1)
-         * [Extensions](#extensions-1)
-            * [Real-time Output](#real-time-output)
-            * [Model Retraining](#model-retraining)
-      * [Driver](#driver-4)
-         * [Summary](#summary-2)
-         * [Additions](#additions)
-            * [Improved Aesthetics](#improved-aesthetics)
-   * [Appendix](#appendix)
-      * [References](#references)
-      * [Source Code](#source-code)
-         * [Standalone System](#standalone-system-3)
-            * [train.py](#trainpy)
-            * [drive.py](#drivepy)
-         * [Trainer](#trainer-4)
-            * [app.py](#apppy)
-            * [backend.py](#backendpy)
-            * [Templates (templates/)](#templates-templates)
-               * [base.html](#basehtml)
-               * [home.html](#homehtml)
-               * [datasets.html](#datasetshtml)
-               * [add_dataset.html](#add_datasethtml)
-               * [edit_dataset.html](#edit_datasethtml)
-               * [training_setup.html](#training_setuphtml)
-               * [training_result.html](#training_resulthtml)
-               * [models.html](#modelshtml)
-               * [edit_model.html](#edit_modelhtml)
-         * [Driver](#driver-5)
-            * [driver.py](#driverpy)
-            * [backend.py](#backendpy-1)
+[toc]
 
 ------
 
@@ -273,7 +45,7 @@ After understanding some of the approaches taken by Tesla and other organisation
 
 The problem being solved by this project is the driving problem, as discussed above.
 
-The aim of this project is to create an artificially intelligent autonomous driving agent that will safely drive a vehicle around a track, which I reference as the ‘agent’ throughout this documentation.
+The project aims to create an artificially intelligent autonomous driving agent that will safely drive a vehicle around a track, which I reference as the ‘agent’ throughout this documentation.
 
 I will also develop ‘Trainer’ and ‘Driver’ applications which provide easy-to-use interfaces for AI model generation and inference.
 
@@ -306,14 +78,14 @@ A concise breakdown of each autonomy level is as follows:
 
 Operationally, there are clear differences between Levels 0, 1 and 2. Most ADSs in L1 come under driver assistance, and in L2 these are considered advanced driver assistance (ADAS). While full self-driving has remained unsolved to date, driver assistance systems have reached commercial success, enriching driving comfort and safety.
 
-However the definition of ADAS is very broad, since technologies under this bracket may range from only hazard driving condition alerts or cruise control, all the way up to the current production ADSs such as the Autopilot example given above.
+The definition of ADAS is very broad, since technologies under this bracket may range from only hazard driving condition alerts or cruise control, all the way up to the current production ADSs such as the Autopilot example given above.
 
-However beyond L2, there seems to be ambiguous differences in actual capabilities. Instead, the majority of the differences are in insurance - upwards of L2, the driver is not required to be as attentive as the previous level all the way up to L5 where they are not needed at all. It is very important that below L5, the ADS is designed with trust of the human driver in mind, since they must be ready to intervene or accept a control handover where required.
+However, beyond L2, there seem to be ambiguous differences in actual capabilities. Instead, the majority of the differences are in insurance - upwards of L2, the driver is not required to be as attentive as the previous level up to L5 where they are not needed at all. It is very important that below L5, the ADS is designed with the trust of the human driver in mind since they must be ready to intervene or accept a handover of controls where required.
 
 Fully autonomous L5 autonomous navigation in general environments has not been realised to date.
 The reason for this is two-fold:
 
-- Autonomous systems which operate in complex dynamic environments require models which generalise to unpredictable situations and reason in a timely manner.
+- Autonomous systems which operate in complex dynamic environments require models which generalise to unpredictable situations and reason promptly.
 - Informed decisions require accurate perception, yet most of the existing computer vision models are still inferior to human perception and reasoning.
 
 These levels do not define the capabilities of a system. The level definition seems to be a mix of both its capabilities and how strict the requirement is for driver attentiveness.
@@ -334,7 +106,7 @@ Considering the driving problem when you are the only car on the road.
 
 #### Dynamic
 
-The static problem, as well as detecting other objects in real-time that are not in the static map and planning appropriate actions. These objects, such as other human driven cars or pedestrians, are not fixed and may move, so you have to predict what these objects will do and then plan accordingly. For this, models of other agents’ behaviours are needed.
+The static problem, as well as detecting other objects in real-time that are not in the static map and planning appropriate actions. These objects, such as other human-driven cars or pedestrians, are not fixed and may move, so you have to predict what these objects will do and then plan accordingly. For this, models of other agents’ behaviours are needed.
 
 2. Detection of road signs
 3. Detection of other vehicles
@@ -352,7 +124,7 @@ Cracking L5 autonomy is a more philosophical level problem. It is far more diffi
 Vaguely mapping these three stages to both the Autonomy Levels and ODDs described above:
 
 - A Static implementation covers all of Track driving and can bring autonomy up to around L2
-- Including Dynamic factors allows the system to cover a much more expansive ODD like Highway and even Urban driving, up to and including L4
+- Incorporating Dynamic factors allows the system to cover a much more expansive ODD like Highway and even Urban driving, up to and including L4
 - Solving the Counterfactual problem and communication overall is what I think will let autonomous vehicles be able to reach Level 5 autonomy in the long term future.
 
 ### Simulation
@@ -361,11 +133,11 @@ Vaguely mapping these three stages to both the Autonomy Levels and ODDs describe
 
 A simulator is a synthetic environment created to imitate the world. Sensors are simulated and can directly work with them. A control interface can also be emulated, like drive-by-wire in a real car.
 
-Historically, development of AVs has been solely physical, without the use of sophisticated simulation.
+Historically, the development of AVs has been solely physical, without the use of sophisticated simulation.
 
 Without using simulation, there are two primary methods to achieve reliable autonomy.
 
-The first is rolling out AVs in constrained environments. Companies such as Waymo or Cruise employ this strategy to map a particular area to a very high definition and then build ADSs that function with high precision in a particular region. Furthermore, this allows companies to achieve higher autonomy levels within a defined geographical area, but does not necessarily work towards a high level generalised system.
+The first is rolling out AVs in constrained environments. Companies such as Waymo or Cruise employ this strategy to map a particular area to a very high definition and then build ADSs that function with high precision in a particular region. Furthermore, this allows companies to achieve higher autonomy levels within a defined geographical area but does not necessarily work towards a high-level generalised system.
 
 The other more curious approach is to build models which are able to reason and learn with little data. A category of algorithms that could be employed for this is Reinforcement Learning, discussed later in the approaches. However, this has not materialised to any significant extent in research or industry yet.
 
@@ -387,7 +159,7 @@ Simulations can have varying levels of detail and realism.
 
 #### Advantages
 
-The main advantage of simulations are that development can be made a no-consequences environment. Apart from time, there is no repercussion for crashing your vehicle, and no time, effort or money is spent on repairing the car - since the simulation can simply be reset.
+The main advantage of simulation is that development can be made a no-consequences environment. Apart from time, there is no repercussion for crashing your vehicle, and no time, effort or money is spent on repairing the car - since the simulation can simply be reset.
 
 Simulation can also be used for testing rare and edge cases and baseline data. With simulation, you are able to test ADSs on:
 
@@ -403,17 +175,17 @@ Simulation can also be used for testing rare and edge cases and baseline data. W
   - Which sensors should I use?
     - Where on the car should they be?
 - Many scalable random permutations
-  - In simulation, it is possible to create just about any traffic scenario that a driver could encounter in the real world.
-  - Easy to obtain data sets, therefore also easier to train sufficiently accurate neural networks. This is particularly useful for data driven methods such as Machine Learning, since the machine can learn from a huge variety of driving scenarios.
+  - In simulators, it is possible to create just about any traffic scenario that a driver could encounter in the real world.
+  - Easy to obtain data sets, therefore also easier to train sufficiently accurate neural networks. This is particularly useful for data-driven methods such as Machine Learning since the machine can learn from a huge variety of driving scenarios.
     - This training can even be done in parallel (with multiple simulations running at the same time), saving money.
   - Using simulation for this avoids the need for a fleet of cars on the road with safety drivers for long periods of time, saving money.
 - Provides easy interfaces and utilities for the perception and planning stages respectively.
 
-All of the above helps developers to both expand ODD and improve reliability in different unseen scenarios. It also allows easy identification of boundary cases for the ADS.
+All of the above helps developers to both expand the system’s ODD and improve reliability in different unseen scenarios. It also allows for easy identification of boundary cases for the ADS.
 
 #### Disadvantages
 
-Fundamentally, simulators are not the same as reality. This leads to residual risk, caused by the ‘Reality Gap’. This means that systems developed in simulation are not very easily ported to reality and retain its autonomy level. This is because:
+Fundamentally, simulators are not the same as reality. This leads to residual risk, caused by the ‘Reality Gap’. This means that systems developed in simulators are not easily ported to reality and retain their autonomy level. This is because:
 
 - Safety models are vastly different between simulation and real life.
 - The models of a simulator will not necessarily match up to reality, so the parameters in the ADS will require tuning to perform well on a physical vehicle. These models could include:
@@ -425,14 +197,14 @@ Fundamentally, simulators are not the same as reality. This leads to residual ri
 The ‘Reality Gap’ consists of three major problems:
 
 - Domain Adaptation Problem
-  - Simulators will never match up to the real world, so even if you mange to obtain a perfect driver in a simulation environment it does not necessarily mean that the performance seen will map exactly to performance in reality. This is an open issue in a sub-field of Artificial Intelligence focused on Transfer Learning.
+  - Simulators will never match up to the real world, so even if you manage to obtain a perfect driver in a simulation environment it does not necessarily mean that the performance observed will map exactly to performance in reality. This is an open issue in a sub-field of Artificial Intelligence focused on Transfer Learning.
   - This problem is especially significant if using lower fidelity simulation.
   - Data Augmentation helps fix this issue.
 - Simulation Fidelity Problem
-  - The ideal sensors mean there is no perception error. However, when a model trained on ideal input data is transferred to the real world, there will be mistakes because in reality, sensors are not perfect and will provide noisy data.
-  - This may adversely affect the performance of the ADS, because the planner must be robust in the presence of such errors.
+  - The ideal sensors mean there is no perception error. However, when a model trained on ideal input data is transferred to the real world, there will be mistakes because, in reality, sensors are not perfect and will provide noisy data.
+  - This may adversely affect the performance of the ADS because the planner must be robust in the presence of such errors.
 
-- Simulation Saliency Problem
+- Simulator Saliency Problem
   - Not all permutations of traffic scenarios will necessarily be something a human would be able to negotiate.
   - Unclear what situations should be considered and what situations should be given tolerance.
 
@@ -458,15 +230,15 @@ Machine Learning (ML) is an application of AI that allows systems to improve fro
 
 ML algorithms are often categorised as follows:
 
-- Supervised learning develop predictive models based on data input and output. It takes a known set of input data and known responses to the data (ground truths) and then trains a model to generate reasonable predictions for the response to new data. It improves by comparing its output with the correct intended output to calculate an error, and modify the model accordingly.
-- Unsupervised learning is used when the data is not labeled. The system is able to infer a function to describe patterns or structure in the unlabeled data.
+- Supervised learning develops predictive models based on data input and output. It takes a known set of input data and known responses to the data (ground truths) and then trains a model to generate reasonable predictions for the response to new data. It improves by comparing its output with the correct intended output to calculate an error, and modify the model accordingly.
+- Unsupervised learning is used when the data is not labelled. The system is able to infer a function to describe patterns or structure in the unlabelled data.
 - Reinforcement learning is a method that interacts with an environment (such as, in this case, a driving simulator) and produces actions, discovering errors in a process called exploration. Over time, they automatically determine the ideal behaviour to maximise performance according to a reward function.
 
 #### Neural Networks
 
-These ML algorithms often utilise [artificial Neural Networks][4], which is a data structure inspired by the structure of biological neurons composed of nodes that are connected to nodes in the following layer with weights, where a greater positive value denotes an excitatory connection and negative values denote inhibitive connections.
+These ML algorithms often utilise [artificial Neural Networks][4], which is a data structure inspired by the structure of biological neurons composed of nodes that are connected to nodes in the following layer with weights, where a greater positive value denotes an excitory (‘strong’) connection and negative values denote inhibitive connections.
 
-Most commonly, feedforward neural networks structured as distinct layers that begin with an ‘input layer’ and terminates in an ‘output layer’, where the values input to the first layer are multiplied by the weights successively to eventually produce values in the output layer that represent some signal.
+Most commonly, feed-forward neural networks structured as distinct layers that begin with an ‘input layer’ and terminates in an ‘output layer’, where the values input to the first layer are multiplied by the weights successively to eventually produce values in the output layer that represent some signal.
 
 <img src="img/analysis/kdnuggets_neural-network.png" alt="A 5-Layer Neural Network" style="zoom:50%;" />
 
@@ -474,11 +246,11 @@ Initially, the parameters in the network are randomly set. This produces random 
 
 The results of the cost function are then ‘backpropagated’ across all nodes and connections to adjust the parameters, modifying initial outputs based on the degree to which they differed from the target values.
 
-I will not go into further detail on the inner workings of network optimisation algorithms as I do not implement this algorithm myself, but as a general idea, it is a technique used alongside a cost function to improve network performance. It is mostly based on high level multivariable calculus, using concepts such as gradient descent and partial derivatives of a cost function with respect to weights and biases to calculate the amount to change each parameter by.
+I will not go into further detail on the inner workings of network optimisation algorithms as I do not implement this algorithm myself, but as a general idea, it is a technique used alongside a cost function to improve network performance. It is mostly based on high-level multivariable calculus, using concepts such as gradient descent and partial derivatives of a cost function with respect to weights and biases to calculate the amount to change each parameter by.
 
 A more thorough explanation of optimisation algorithms for neural networks can be found at a variety of places online. There are many other components to neural networks, including activation functions, the vanishing and exploding gradient problems, and disagreeing machines.
 
-Activation functions such as sigmoid, softmax or rectified linear unit are used in many of these network architectures to provide normalised activation values. Most commonly, these are applied in the final layers of the network.
+Activation functions such as sigmoid, softmax or (rectified) linear unit are used in many of these network architectures to provide normalised activation values. Most commonly, these are applied in the final layers of the network.
 
 Once trained, these networks can be used to predict an output, such as a steering angle. This process of obtaining outputs is called ‘inference’. In a simulation context, a neural network that is given real-time input from its virtual sensors will ideally eventually learn to control the vehicle reliably in most situations.
 
@@ -496,13 +268,13 @@ These networks are especially powerful when paired with large quantities of data
 
 I will provide a brief overview below, mostly condensed from these [Stanford university lecture notes][6] and this [blog post][8].
 
-These filters look at regions of an input image with a defined window size and map it to some output. It then slides the window by some defined stride to other regions, covering the whole image. Each convolution filter layer thus captures the properties of this input image hierarchically in a series of subsequent layers, capturing the details like lines in image, then shapes, then whole objects in later layers. This process is called a “convolution”, hence the name of the architecture. Convolutions preserve the spatial relationship between pixels by learning image features using small squares of input data. The product of this operation is called a “feature map”.
+These filters look at regions of an input image with a defined window size and map it to some output. It then slides the window by some defined stride to other regions, covering the whole image. Each convolution filter layer thus captures the properties of this input image hierarchically in a series of subsequent layers, capturing the details like lines in images, then shapes, then whole objects in later layers. This process is called a “convolution”, hence the name of the architecture. Convolutions preserve the spatial relationship between pixels by learning image features using small squares of input data. The product of this operation is called a “feature map”.
 
 <img src="img/analysis/wikipedia_typical-cnn.png" alt="A typical Convolutional Neural Network" style="zoom:50%;" />
 
 Spatial Pooling (also called subsampling or downsampling) reduces the dimensionality of each feature map but retains the most important information. Spatial Pooling can be of different types: Max, Average, Sum etc.
 
-In the case of Max Pooling, we define a spatial neighborhood and take the largest element from the rectified feature map within that window. Instead of taking the largest element we could also take the average (Average Pooling) or sum of all elements in that window. In practice, Max Pooling has been shown to work better.
+In the case of Max Pooling, we define a spatial neighbourhood and take the largest element from the rectified feature map within that window. Instead of taking the largest element, we could also take the average (Average Pooling) or sum of all elements in that window. In practice, Max Pooling has been shown to work better.
 
 <img src="img/analysis/stanford_max-pooling.jpeg" alt="An example of Max-Pooling" style="zoom:45%;" />
 
@@ -511,17 +283,17 @@ The purpose behind Pooling is to progressively reduce the spatial size of the in
 - Makes the input representations (feature dimension) smaller and more manageable.
 - Reduces the number of parameters and computations in the network, therefore, controlling overfitting (discussed below).
 - Makes the network invariant to small transformations, distortions and translations in the input image (since we pool as an average or maximum for example).
-- Helps us arrive at an almost scale invariant representation of our image. This is very powerful since we can detect objects in an image no matter where they are located.
+- Helps us arrive at an almost scale-invariant representation of our image. This is very powerful since we can detect objects in an image no matter where they are located.
 
 These convolutional layers are commonly followed by fully connected (Dense) layers where each node is connected to all nodes in the following layer. The overall network is architected as such to allow features extracted from the CNN portion to be classified or regressed accordingly.
 
-The convolutional layers are intended to handle feature engineering for the fuly connected layers.
+The convolutional layers are intended to handle feature engineering for the fully connected layers.
 
 
 
 ## Research
 
-In order to further understand what the driving problem is, the potential ways of solving it, and the theory underpinning it, comprehensive research had to be conducted. Many algorithms exist in the autonomous vehicle AI software space, all with varying levels of complexity and each with their own advantages and disadvantages.
+In order to further understand what the driving problem is, the potential ways of solving it, and the theory underpinning it, comprehensive research had to be conducted. Many algorithms exist in the autonomous vehicle AI software space, all with varying levels of complexity and each with their advantages and disadvantages.
 
 More empirical overviews extracted from my research can be seen in the [Design](#Design) stage below.
 
@@ -535,31 +307,31 @@ The earliest paper I came across for an Autonomous Vehicle was by Matthew Turk w
 
 VITS utilised a single colour (RGB) camera as sensor input and segmented the road by colour using linear algebra techniques (dot product of the red and blue colour channels of each pixel), which relies on an assumption that the colour of the road surface and the sky/surroundings being generally quite different.
 
-Once VITS maps out what region of the image is road and what is not, it uses a modular pipeline to estimate a trajectory for the ego vehicle. ALV does this by mapping the boundaries from image space to world space. Then, this information is fit into a control algorithm, outputting a steering angle. The ALV was able to run its first demo at 2 mph. Note that this only controlled lateral control (steering) but not how fast the vehicle moved (throttle, or longitudinal control).
+Once VITS maps out what region of the image is the road and what is not, it uses a modular pipeline to estimate a trajectory for the ego vehicle. ALV does this by mapping the boundaries from image space to world space. Then, this information is fit into a control algorithm, outputting a steering angle. The ALV was able to run its first demo at 2 mph. Note that this only controlled lateral control (steering) but not how fast the vehicle moved (throttle, or longitudinal control).
 
-However, the failures of the ALV are clear. Firstly, the vehicle is only able to traverse its track at 2 miles per hour which is very slow, however this is forgiven in that the computational power available to Turk in the 80s is far different to what we have access to now. The main failure is that there are many scenarios in which the colour of the road and the colour of the surrounding environment are similar, such as in deserts or in dirt tracks surrounded by trees. This means that, in these difficult environments, VITS is less reliable and more prone to trajectory calculation error and therefore more likely to cause an overall failure. The ALV was later improved to add adaptive algorithm parameter tuning, but this did not improve the overall performance by a significant amount.
+However, the failures of the ALV are clear. Firstly, the vehicle is only able to traverse its track at 2 miles per hour which is very slow, but this is forgiven in that the computational power available to Turk in the 80s is far different to what we have access to now. The main failure is that there are many scenarios in which the colour of the road and the colour of the surrounding environment are similar, such as in deserts or dirt tracks surrounded by trees. This means that, in these difficult environments, VITS is less reliable and more prone to trajectory calculation error and therefore more likely to cause an overall failure. The ALV was later improved to add adaptive algorithm parameter tuning, but this did not improve the overall performance by a significant amount.
 
 Developments in AVs for a few years after the ALV was created seemed to employ similar vision and motion planning algorithms.
 
 To summarise, the ALV:
 
-- is Vision based (only takes camera input)
+- is Vision-based (only takes camera input)
 - uses a hand-written planning algorithm
 
 #### ALVINN
 
 What is most interesting to me about this approach is how starkly different it is to all of its predecessors. Dean Pomerleau built the [“Autonomous Land Vehicle in a Neural Network”][15]. Overall, this improved both the robustness and the adaptability of the state-of-the-art AVs of the time.
 
-Consider the ALV. We can abstract the steps of operation of the ALV as composing parts of an overall function; one that takes an image as input and outputs a steering angle value to keep the vehicle centred on the road. The ALV team chose to break apart this function into the discrete steps covered above - as a modular pipeline - however we could choose other ways to map images to steering angles.
+Consider the ALV. We can abstract the steps of operation of the ALV as composing parts of an overall function; one that takes an image as input and outputs a steering angle value to keep the vehicle centred on the road. The ALV team chose to break apart this function into the discrete steps covered above - as a modular pipeline - however, we could choose other ways to map images to steering angles.
 
 Around the time of Pomerleau's research, Geoffrey Hinton released a paper on mathematical models loosely based on how our biological brains work: Neural Networks (NNs), as well as a novel method to allow artificial NNs to learn from data and errors: [backpropagation][16]. Pomerleau considered the application of this structure to AVs: instead of manually programming all of the steps to map images to steering outputs as the ALV team had done - what if we could use an Artificial Neural Network to ‘learn’ the whole pipeline?
 
-A high level description of what Pomerleau set up:
-A three layer NN, with which takes an image as input, processes through one hidden layer, and comes out to some output units, each representing a particular steering angle. Then, he began ‘teaching’ his network from human driving data using Hinton’s backpropagation. Over training with more data, the weights in this network formed in a way that the steering angles computed by it would converge towards the human driving data for that input image, and the idea was that eventually ALVINN would be able to drive like the human it was trained from.
+A high-level description of what Pomerleau set up:
+A three layer NN, with which takes an image as input, processes through one hidden layer, and comes out to some output units, each representing a particular steering angle. Then, he began ‘teaching’ his network from human driving data using Hinton’s backpropagation. During training with more data, the weights in this network formed in a way that the steering angles computed by it would converge towards the human driving data for that input image, and the idea was that eventually, ALVINN would be able to drive like the human it was trained from.
 
-It is incredible that a structure as seemingly simple in operation as a feedforward neural network is able to steer around a track just from images and human steering angle data. It is also both impressive and convenient that this network is able to learn features such as straights and turns on a road image without hard declarations or definitions of them.
+Incredibly, a structure as seemingly simple in operation as a feed-forward neural network caan steer around a track just from images and human steering angle data. It is also both impressive and convenient that this network is able to learn features such as straights and turns on a road image without hard declarations or definitions of them.
 
-Pomerleau put this architecture into practise on a vehicle called NAVLAB1, a van with a roof mounted colour camera and holding a computer running a trained model of the neural network. This vehicle ran on a version of ALVINN’s architecture that had very few nodes. It took 30 by 32 pixel colour images, so the input layer had 960 nodes in the input layer. Each of these nodes was connected to 4 nodes in the singular hidden layer, which are present to pick up features. These then went out to 30 output nodes. In total, this means there are 3960 weights (parameters) in this ALVINN1 network. NAVLAB1 was able to travel at a top speed of 1 mph.
+Pomerleau put this architecture into practice on a vehicle called NAVLAB1, a van with a roof-mounted colour camera and holding a computer running a trained model of the neural network. This vehicle ran on a version of ALVINN’s architecture that had very few nodes. It took 30 by 32-pixel colour images, so the input layer had 960 nodes in the input layer. Each of these nodes was connected to 4 nodes in the singular hidden layer, which are present to pick up features. These then went out to 30 output nodes. In total, this means there are 3960 weights (parameters) in this ALVINN1 network. NAVLAB1 was able to travel at a top speed of 1 mph.
 
 The next version of ALVINN - version 2 - made improvements both in the sensor suite to form a new vehicle, NAVLAB2. This changed the network to include an extra input, from a range finder - what we now know as a depth sensor. The width of the hidden layer is increased by over 7 times, now with 29 nodes. The output layer has 45 nodes now, increasing the resolution of the steering angle, and allowing for more fine adjustments in the control part of the stack. Using this, he was able to execute a transcontinental traversal of America: “No Hands Across America ‘95”, 98% autonomously, using only a camera as sensor input. This is a massive leap from both the ALV and ALVINN1.
 
@@ -567,7 +339,7 @@ This is an early instance of a method called Imitation Learning (IL) on an artif
 
 ALVINN:
 
-- is Vision based, like the ALV
+- is Vision-based, like the ALV
 - is the first ADS to make use of Machine Learning (ML) on artificial NNs rather than a modular hand-written planning pipeline
 - used relatively shallow 3-layer NNs
 
@@ -577,9 +349,9 @@ After this historical dive, I looked at research papers released by companies in
 
 In [this paper by NVIDIA, “DAVE-2” is developed][17], providing a well structured, more modern pipeline for training and inference. This system is based on ALVINN but is updated to fully utilise the computational power made available more recently.
 
-DAVE-2 uses a CNN to comprise a monolithic learning system. This takes in images from front facing cameras and maps them to steering commands. In NVIDIA’s real implementation on a vehicle, this turned out to be surprisingly powerful and required relatively little training data from human drivers to learn to drive in an Urban operational domain, even without lane markings.
+DAVE-2 uses a CNN to comprise a monolithic learning system. This takes in images from front-facing cameras and maps them to steering commands. In NVIDIA’s real implementation on a vehicle, this turned out to be surprisingly powerful and required relatively little training data from human drivers to learn to drive in an Urban operational domain, even without lane markings.
 
-Since this is E2E, the network automatically learns internal representations of the processing steps and useful scene features such as lanes, pedestrians or other vehicles. These do not have to be explicitly defined, and therefore optmises the processing steps, which improves long term performance.
+Since this is E2E, the network automatically learns internal representations of the processing steps and useful scene features such as lanes, pedestrians or other vehicles. These do not have to be explicitly defined and therefore optmises the processing steps, which improves long term performance.
 
 In NVIDIA’s model, they reached a good enough accuracy such that their self-driving car could run in traffic and in parking lots without crashing despite only being given one camera’s input.
 
@@ -587,7 +359,7 @@ In NVIDIA’s model, they reached a good enough accuracy such that their self-dr
 
 For data collection, NVIDIA drove on a wide variety of physical roads in a diverse set of lighting and weather conditions, mostly across the USA.
 
-NVIDIA used simulation mixed with real-world training data to test their system prior to implementing it in an actual vehicle.
+NVIDIA used simulation mixed with real-world training data to test their system before implementing it in an actual vehicle.
 
 ### Existing Trainer/Driver Systems
 
@@ -599,9 +371,9 @@ Thus, these applications will have to be designed mostly from scratch.
 
 ## Client Discussion
 
-In order to determine the objectives of the system, I considered the needs of a client for the system - one of the principal engineers at FiveAI. I asked them which features they would like to be implemented in my AV and Trainer system.
+To determine the objectives of the system, I considered the needs of a client for the system - one of the principal engineers at FiveAI. I asked them which features they would like to be implemented in my AV and Trainer system.
 
-The results of the exchange has been summarised in the table below, along with a priority label column.
+The results of the exchange is summarised in the table below, along with a priority label column.
 
 
 
@@ -631,7 +403,7 @@ FiveAI writes in [their blog post on AI safety][3]:
 
 > One of the key concepts in autonomous driving is that of the ODD, which is defined as the “operating conditions under which a given ADS is specifically designed to function”. The ODD forms a high level specification in which the ADS is designed to operate safely. This includes, for example, the types of environmental conditions it will see, the types of traffic and the roadway characteristics.
 
-The larger/wider the ODD, the more extensive its capabilities since it is able to perform well in a wider range of driving scenarios. The ODD of a simulated system can never be the same as reality and is always limited since in reality there are an infinite number of possibilities that a driverless vehicle can run into while driving.
+The larger/wider the ODD, the more extensive its capabilities since it is able to perform well in a wider range of driving scenarios. The ODD of a simulated system can never be the same as reality and is always limited since in reality there is an infinite number of possibilities that a driverless vehicle can run into while driving.
 
 Here I will consider two brackets of driving domains, which I have labelled ‘Track’ and ‘Urban’. These are not universal definitions for these domains.
 
@@ -664,11 +436,11 @@ Here I will consider two brackets of driving domains, which I have labelled ‘T
 - Roads can be comprised of many lanes in either direction (typically 1 or 2)
 - Roundabouts, junctions etc.
 
-Another major domain is highway driving, which is driving at a higher speed on straight roads with many lanes, exits and joins. This environment will not be considered in this project, but is relevant to real AVs.
+Another major domain is highway driving, which is driving at a higher speed on straight roads with many lanes, exits and joins. This environment will not be considered in this project but is relevant to real AVs.
 
 In order for an ADS to progress from track driving (smaller ODD threshold as there are fewer factors to consider) to urban driving (larger ODD threshold because the environment is much more complex and there are many more factors to consider), plans must be made on how to expand the ODD.
 
-The biggest jump in capabilities from an extension of the ODD in my opinion is moving into an environment where there are other agents present, since the objective becomes driving predictably to avoid confusing those travelling alongside the ego vehicle.
+The biggest jump in capabilities from an extension of the ODD in my opinion is moving into an environment where there are other agents present since the objective becomes driving predictably to avoid confusing those travelling alongside the ego vehicle.
 
 ### Simulators
 
@@ -806,7 +578,7 @@ Perception systems in an autonomous vehicle can be composed of a variety of sens
 
 Vision sensors primarily pertain to cameras. This can range from just one singular camera (known as monocular vision) up to an array of cameras placed strategically around the car.
 
-Vision systems are currently most useful in ADAS since they can be mass produced. An example of a company that uses this approach is Tesla with their Autopilot line.
+Vision systems are currently most useful in ADAS since they can be mass-produced. An example of a company that uses this approach is Tesla with Autopilot.
 
 A binocular setup is comparable to how humans solve the driving task.
 
@@ -816,31 +588,31 @@ Advantages:
   - Lots of detail can be inferred from it, about texture and even distance
 - Colour data
   - Can infer information about the colour of a traffic light, or type of a speed sign
-  - This makes it the only sensor discussed here that allows to solve the task without any additional sensors
+  - This makes it the only sensor discussed here that allows solving the task without any additional sensors
 - Feasible to collect data at scale and learn from it
-  - Allows coverage of more edge cases and helps with generalisation of the system
+  - Allows coverage of more edge cases and helps with the generalisation of the system
 - Roads are designed for human eyes, and cameras are the closest sensor to our biological sense counterpart
 - They are relatively cheap and ubiquitous when compared to LIDAR and Radar
-- Does not have to rely on good mapping of regions
+- Does not have to rely on the quality of mapping of regions
 
 Disadvantages:
 
 - Inaccurate depth information
-  - How to perceive 3D world from 2D image?
+  - How to perceive/infer our 3D world from a 2D image?
   - Human vision is not very accurate at this either, so may not be particularly significant?
   - Can be segmented by depth using Machine Learning
 - Not accurate without a lot of data
-- Not explainable or consistent in all conditions, can be affected by
+- Not explainable or consistent in all conditions and can be affected by:
   - Harsh weather
   - Bad lighting
 
 #### Point Clouds and Maps
 
-Mapping can be used as an input to the planning systems. Today, differential GPS in combination with inertial measurement units (IMU) allows for localization at an accuracy of 5cm in good conditions, enabling the use of detailed lane-level road maps (HD maps) and providing redundancy for noisy vision-based localisation.
+Mapping can be used as an input to the planning systems. Today, differential GPS in combination with inertial measurement units (IMU) allows for localisation at an accuracy of 5cm in good conditions, enabling the use of detailed lane-level road maps (HD maps) and providing redundancy for noisy vision-based localisation.
 
-LIDAR, which stands for Light Detection and Ranging, illuminates objects with lasers and then measuring the time of reflection with a sensor. By placing this on top of an autonomous vehicle, we can get a 3D point cloud view of all objects and how far they are from the ego vehicle. This produces a high resolution map of the surrounding environment.
+LIDAR, which stands for Light Detection and Ranging, illuminates objects with lasers and then measuring the time of reflection with a sensor. By placing this on top of an autonomous vehicle, we can get a 3D point cloud view of all objects and how far they are from the ego vehicle. This produces a high-resolution map (consisting of a vast set of points in virtual 3D space, hence the name “point cloud”) of the surrounding environment.
 
-ADSs that incorporate LIDAR tend to take a very particular constrained set of roads, mapping them extensively and then using the most accurate sensors available, and currently that is widely considered to be LIDAR. Then this highly extensive and accurate data is used to localise the ego vehicle effectively and predict a trajectory from that.
+ADSs that incorporate LIDAR tend to take a very particular constrained set of roads, mapping them extensively and then using the most accurate sensors available, and currently, that is widely considered to be LIDAR. Then this highly extensive and accurate data is used to localise the ego vehicle effectively and predict a trajectory from that.
 
 These are the systems that may be able to reach L4 autonomy in the current day and age. Examples of companies using this approach include Waymo and Cruise.
 
@@ -858,7 +630,7 @@ Disadvantages:
 
 - Very expensive
 - Most approaches using these technologies are not Deep Learning based so they do not improve over time
-  - This is because Machine Learning techniques require lots of data, and in physical systems this needs large fleets of cars
+  - This is because Machine Learning techniques require lots of data, and in physical systems, this needs large fleets of cars
 
 #### Other
 
@@ -904,9 +676,9 @@ Different approaches taken by industry are outlined in [this thread by Vladimir 
 
 The modular pipeline is the standard approach to autonomous driving in industry.
 
-Modular pipelines are systems where engineers construct every step of the decision making process in the ADS. The key idea is to break down the complex mapping function from high-dimensional inputs to low-dimensional control variables into modules which can be independently developed, trained, and tested.
+Modular pipelines are systems where engineers construct every step of the decision-making process in the ADS. The key idea is to break down the complex mapping function from high-dimensional inputs to low-dimensional control variables into modules which can be independently developed, trained, and tested.
 
-Generally, engineers will fit as much sensors as possible on the car, build high-definition maps of the environment and throw in lots of compute power. This is sometimes known as the “Everything that fits” approach.
+Generally, engineers will fit as many sensors as possible on the car, build high-definition maps of the environment and throw in lots of computational power. This is sometimes known as the “Everything that fits” approach.
 
 The strategy here is to find the fastest (and most expensive) way to self-driving, usually directly aiming towards L5.
 
@@ -930,18 +702,18 @@ Existing approaches typically leverage:
 
 Advantages:
 
-- They provide human understandable representations for information such as detected objects or drivable area
-  - This allows for engineers to gain an insight into failure modes of the system
+- They provide human-understandable representations for information such as detected objects or drivable area
+  - This allows engineers to gain an insight into failure modes of the system
 - Easy parallelisation of development
   - Different teams can work on different aspects of the driving problem simultaneously
 - Easy to integrate prior features of the driving problem at higher ODDs into the system, such as
   - Traffic laws that are explicitly enforced in the planner
-  - Knowledge on vehicle dynamics such as friction and traction
+  - Knowledge of vehicle dynamics such as friction and traction
   - Information that is more difficult to hand-specify such as the appearance of pedestrians can be learned from large annotated datasets
 - Lots of sensor redundancy improves safety
 - Fast development, straight to L5
 
-Disdavantages:
+Disadvantages:
 
 - Human designed intermediate representations of driving and driving state are not necessarily optimal
 - Modules are validated independently of one another, meaning residual wasted compute
@@ -953,11 +725,11 @@ Disdavantages:
 
 #### Monolithic Learning
 
-These methods allow developers to launch very quickly, but is not necessarily the safest. It does, however, provide the fastest feedback loop and most data.
+These methods allow developers to launch quickly, but is not necessarily the safest. It does, however, provide the fastest feedback loop and most data.
 
 They are cheap and scalable, but in a way utilise end-user testing on CV/ML algorithms. It is also not clear yet if these methods can easily scale to L5.
 
-These approaches are often called "Pixel to Peddle” because they are generic models, often based on Neural Networks, that take in an observation and map them to actions. The network parameters can be learned by two main methods: imitation learning and reinforcement learning.
+These approaches are often called "Pixel to Peddle” because they are generic models, often based on Neural Networks, that takes in observations and maps them to actions. The network parameters can be learned by two main methods: imitation learning and reinforcement learning.
 
 ##### Imitation Learning
 
@@ -966,10 +738,10 @@ This method works on the basis of using neural networks to clone driving behavio
 To implement an Imitation Learning approach, the following is required:
 
 - Driving datasets in a similar or identical form to the perception systems used during inference
-- Labels for the data in the dataset that correspond to the control signals the network will produce as outputs
+- Labels for the data in the dataset that corresponds to the control signals the network will produce as outputs
 - A neural network, as well as training algorithms to learn the weights in the network.
 
-For example, in my case - using a vision based perception system, dashcam video may be used as data to train my model. Each frame or image in this vision dataset steering should be labelled with an angle/throttle value.
+For example, in my case - using a vision-based perception system, dashcam video may be used as data to train my model. Each frame or image in this vision dataset steering should be labelled with an angle/throttle value.
 
 I plan to use the first track (one lane, soft turns, flat) as a training/validation data source, and then test on the second track (two lanes, sharp turns, ups & downs). Alternatively, I will train on the second track and see if it's able to stay in one lane instead of drifting between the two.
 
@@ -989,22 +761,22 @@ Disadvantages:
 
 [This area of Machine Learning][13] is concerned with agents interacting with an environment in order to maximise some set reward objective. It is a different paradigm of ML altogether to Imitation Learning discussed above. 
 
-This depends on exploration of the world and requires little data to train.
+This relies on the exploration of the world.
 
 Doing this in real-life is likely not possible, so simulators are commonly leveraged for RL approaches.
 
 Advantages:
 
-- Has potential to be a far better result in the end
+- Has the potential to be a far better result in the end
 - Doesn’t require human in the loop for training, or a dataset
 - Avoids human bias being incorporated into the model
-- Has potential to be more robust than a system trained via supervised learning
+- Has the potential to be more robust than a system trained via supervised learning
 - May generalise better in the long term
 
 Disadvantages:
 
 - Takes a huge amount of trial and error, and hence also a massive amount of computational time to reach the same level of accuracy (when compared to Imitation Learning)
-- May not obtain predictable driving until far into long term of learning period
+- May not obtain predictable driving until far into the long term of its learning period
 - Difficult to define ubiquitous reward function for ‘good driving’
 
 ### Control
@@ -1059,7 +831,7 @@ The training error is a good general guide for the behaviour of the network as i
 
 The validation error is useful to get a sense of the level of generalisation the network has achieved as it monitors performance on unseen data for the network as it trains.
 
-After training, we can test the model on (preferably unseen) data and view it’s performance during inference.
+After training, we can test the model on (preferably unseen) data and view its performance during inference.
 
 ### ADS Performance
 
@@ -1080,19 +852,19 @@ In a dynamic environment such as urban driving, disengagements are generally cau
 1. Naturally occurring situations requiring urgent attention (eg. a pedestrian popping out quickly from occluded/hidden area from the car’s sensors and the human driver taking control to brake)
 2. Driver caution, judgement, or preference (eg. if the human thinks the planned path by the ADS might be wrong and takes over control)
 3. Courtesy to other road users (eg. if the human thinks the AV is confusing other road users in its actions and takes over control)
-4. True AV limitations or errors (eg. when an AV crashes into a lamp post)
+4. True AV limitations or errors (eg. when an AV crashes into a lamppost)
 
 Of course, measuring a disengagement is an important analytic for the performance, but it provides no insight into the reason why the ADS was disengaged in the first place.
 
 #### Scoring
 
-A qualitative method of measuring success for an ADS is just to watch it in action and rate it on intuition by watching it drive from an external perspective. By nature this method is less accurate due to it not being based on statistics or ground truths.
+A qualitative method of measuring success for an ADS is just to watch it in action and rate it on intuition by watching it drive from an external perspective. By nature, this method is less accurate due to it not being based on statistics or ground truths.
 
-I can rate the agent’s driving on smoothness of turning and amount of jitter.
+I can rate the agent’s driving on the smoothness of turning and amount of jitter.
 
 In the case I am training the system to go around a one-lane track, I can count how many times the vehicle goes off the track/crashes.
 
-If instead I am training the system to stay in one lane on a two-lane track, I can check for how many times the agent breaches the lane lines on one lap.
+If instead, I am training the system to stay in one lane on a two-lane track, I can check for how many times the agent breaches the lane lines on one lap.
 
 
 
@@ -1116,7 +888,7 @@ I will be using a simulator to create the environment that the vehicle will navi
 As discussed in the Problem Statement the components of any practical ADS involves Perception, Planning and Control:
 
 - Perception develops an internal model of the world outside, including the location of the ADS in that world.
-- Planning develops a high level trajectory plan for the ADS based on goals, an interpretation of that model in the world and rules.
+- Planning develops a high-level trajectory plan for the ADS based on goals, an interpretation of that model in the world and rules.
 - Control translates that plan into smooth and comfortable steering, acceleration, braking and signalling
 
 Below I briefly outline the chosen architecture for each portion of the pipeline.
@@ -1152,7 +924,7 @@ In the end, this project will comprise of two applications:
 
 I will also create a “Standalone System” which will be a set of programs that have no interface but serve as the development stage for the backends of both the Trainer and Driver applications.
 
-A high level description of each part of the project is discussed in the ’Structure’ subsection and a more detailed breakdown of each program is considered in the ‘Operation’ subsection.
+A high-level description of each part of the project is discussed in the ’Structure’ subsection and a more detailed breakdown of each program is considered in the ‘Operation’ subsection.
 
 The general process for a user in the overall Track Driver system is:
 
@@ -1164,6 +936,8 @@ The general process for a user in the overall Track Driver system is:
 6. Launch the Udacity simulator in Autonomous mode
 7. Launch the Driver
 8. Select the model from the Trainer’s `models` folder and start driving
+
+
 
 ## Standalone System
 
@@ -1181,7 +955,7 @@ The training data consists of images from left, centre and right cameras with a 
 
 Once trained, the network is able to generate steering angles from the video feed of the vehicle of a single centre camera.
 
-A high level diagram of the training process is as follows:
+A diagram of the training process is as follows:
 
 <img src="img/design/nvidia_dave-2-training.png" alt="Model Training Process" style="zoom: 50%;" />
 
@@ -1193,7 +967,7 @@ The network will consist of 9 layers, including a normalisation layer, 5 convolu
 
 <img src="img/design/nvidia_dave-2-arch.png" alt="Neural Network Architecture" style="zoom:50%;" />
 
-The optimiser I will be using to train this network is the “adaptive moment estimation”, or “Adam” algorithm. This algorithm has become more popular in recent years on Deep NNs and is very efficient.
+The optimiser I will use to train this network is the “adaptive moment estimation”, or “Adam” algorithm. This algorithm has become more popular in recent years on Deep NNs and is very efficient.
 
 The activation functions used here are “eLU” (*not to be confused with ReLU*), but the reason for this decision will not be discussed in much further detail here since they are beyond the scope of the project. It is related to the vanishing and exploding gradient problems.
 
@@ -1222,7 +996,7 @@ For instance, if the dataset is found to have an excess of points under some var
 
 The program will now load the images as training data the corresponding steering angles into an easy to access, labelled format.
 
-I may also have to do some manipiulation to the data values depending on the source of the images. For instance, left and right cameras as individual datapoints left as corresponding to the same steering angle may not be accurate, so I should offset this to model what the model will see during inference - only the centre camera.
+I may also have to do some manipulation to the data values depending on the source of the images. For instance, left and right cameras as individual data points left as corresponding to the same steering angle may not be accurate, so I should offset this to model what the model will see during inference - only the centre camera.
 
 Here I will also split the data into training and validation subsets for reasons discussed in the [Analysis](#Analysis) stage.
 
@@ -1235,7 +1009,7 @@ This includes:
 - Resizing
 - Denoising
 - Cropping
-- Color space conversions
+- Colour space conversions
 - Normalisation
 
 ##### Augmenter
@@ -1262,7 +1036,7 @@ This way, I can run the entire dataset effectively through the batch generator. 
 
 This way, I break up the dataset and feed it into the network batch by batch to reduce the full immediate workload to the model and allow us to check on losses through training.
 
-This helps with tuning of the hyperparameters (training parameters) since we can check the first 3 epochs worth of losses, and if they are relatively high, I can stop there itself rather than waiting for the entire dataset to go through the program.
+This helps with the tuning of hyperparameters (training parameters) since we can check the first 3 epochs worth of losses, and if they are relatively high, I can stop there itself rather than waiting for the entire dataset to go through the program.
 
 ##### Model
 
@@ -1343,7 +1117,7 @@ The general process that the user will go through when using the trainer is:
 2. Enter ’Training’ mode and select a track
 3. Record a driving dataset of them driving some laps around the track into the `datasets` folder
 4. Run Trainer web app
-5. Select dataset from *dataset manager*
+5. Select the dataset from *dataset manager*
 6. Enter *training wizard*, optionally select advanced options for parameter customisation
 7. Train model
 
@@ -1626,13 +1400,13 @@ This results in the following plot (where the x-axis is the steering angle and t
 
 <img src="img/implementation/hist.png" style="zoom: 33%;" />
 
-You can see in the above plot that there is a disproportionate amount of zero steering angles (driving perfectly straight), which is not necessarily surprising from an empirical perspective, but does significantly affect the way the Neural Network will be trained down the line. This is because, if the Neural Network is trained on a very large number of examples where the steering angle is zero, it will (in the long term) be more inclined to drive straight and this may mean the agent will not make sharper turns on the track where required.
+You can see in the above plot that there is a disproportionate amount of zero steering angles (driving perfectly straight), which is not necessarily surprising from an empirical perspective but does significantly affect the way the Neural Network will be trained down the line. This is because, if the Neural Network is trained on a very large number of examples where the steering angle is zero, it will (in the long term) be more inclined to drive straight and this may mean the agent will not make sharper turns on the track where required.
 
 ###### Balancing
 
 To counteract this, the number of data points where the steering angle is zero should be limited. Some arbitrary threshold must be set to align with the number of remaining data points in this set. This threshold must be low enough to avoid the network being biased towards a zero value, but not too few such that the statistical structure of the original data is modified.
 
-On these distributions of dataset, a value of a few hundred is good. For optimal performance, before training any particular dataset, this value should be changed accordingly.
+On these distributions of the dataset, a value of a few hundred is good. For optimal performance, before training any particular dataset, this value should be changed accordingly.
 
 To visualise this threshold let us plot a horizontal line for the limit of the size of any bin on the plot I have above.
 
@@ -1655,9 +1429,9 @@ _, bins = np.histogram(data["steering_angle"], num_bins) # Splitting data into n
 
 In order to balance these bins I now have obtained, one possible approach jumps out.
 
-I could go through each bin until some number of datapoints are collected, and then when a maximum threshold is reached (in this case, 200) just cut off the dataset beyond that point (for that bin of steering angles). However, this is not a good approach since the array recorded information about steering angles from the beginning to the end of the track - the dataset is ordered. If I cut off after a certain index, the model will not be trained on any data beyond some point on the track. This risks missing out key training indicators such as turning around a bend that goes in a certain direction.
+I could go through each bin until some number of data points are collected, and then when a maximum threshold is reached (in this case, 200) just cut off the dataset beyond that point (for that bin of steering angles). However, this is not a good approach since the array recorded information about steering angles from the beginning to the end of the track - the dataset is ordered. If I cut off after a certain index, the model will not be trained on any data beyond some point on the track. This risks missing out key training indicators such as turning around a bend that goes in a certain direction.
 
-Another approach is to shuffle the array and discard after a certain index. This way, I do not cut out entire chunks of time along the driving log, but instead datapoints scattered throughout the set. This is preferable since it does not mean risking any of the points listed in the previous approach.
+Another approach is to shuffle the array and discard after a certain index. This way, I do not cut out entire chunks of time along the driving log, but instead, data points scattered throughout the set. This is preferable since it does not mean risking any of the points listed in the previous approach.
 
 So, to implement this approach, I must iterate through each bin in the `bins` variable until the threshold is reached, and then shuffle the array randomly, and then discard the indexes beyond a certain point.
 
@@ -1687,7 +1461,7 @@ data.drop(data.index[all_discard_indexes], inplace=True) # Removing excess data 
 
 This section will turn the now preprocessed raw data into a labelled dataset that can be used for training.
 
-To clarify, the data now consists of some number of entries. Each entry contains three images and a corresponding steering angle (and some other values, but these are irrelevant to the training process). I will now turn each ‘triplet’ of datapoints (known as ‘entries’ throughout this program) and convert them into a long list of ‘datapoints’. Therefore, if there are, for example, 1000 entries in the preprocessed data (meaning read and balanced), I expect to have 3000 datapoints since each entry has a datapoint from the centre, left and right cameras.
+To clarify, the data now consists of some number of entries. Each entry contains three images and a corresponding steering angle (and some other values, but these are irrelevant to the training process). I will now turn each ‘triplet’ of data points (known as ‘entries’ throughout this program) and convert them into a long list of ‘data points’. Therefore, if there are, for example, 1000 entries in the preprocessed data (meaning read and balanced), I expect to have 3000 data points since each entry has a data point from the centre, left and right cameras.
 
 First, I declare the required parameters:
 
@@ -2224,7 +1998,7 @@ The web application is built in `Flask`. This will mainly provide utilities for 
 
 The other web-based library I am using is `Flask_SQLAlchemy` which is a wrapper for the database interface library `SQLAlchemy`.
 
-I will be using `sqlite` as my Object-relational mapper (ORM) database. This is different to other popular ORMs such as `MySQL` or `PostgreSQL` which run their own servers on the host machine since `sqlite` keeps the database all under one single file on disk.
+I will be using `sqlite` as my Object-relational mapper (ORM) database. This is different from other popular ORMs such as `MySQL` or `PostgreSQL` which run servers on the host machine while `sqlite` keeps the database all under one single file on disk.
 
 Overall imports are:
 
@@ -2330,7 +2104,7 @@ A comment on the `render_template()` function that is used extensively in these 
 
 ##### Base Template
 
-This template (`base.html`) forms a general structure for each webpage, and contains elements that appear across all pages on the site, such as the navigation bar at the top.
+This template (`base.html`) forms a general structure for each webpage and contains elements that appear across all pages on the site, such as the navigation bar at the top.
 
 Through all of these templates, I use the following frameworks (only for styling):
 
@@ -2375,7 +2149,7 @@ def datasets():
     return render_template("datasets.html", datasets=datasets)
 ```
 
-Now, on the template (`datasets.html`), I run the `datasets` list through a `Jinja` `for` loop and display each attribute in a HTML table. I also create buttons on each for for training, editing and deleting that correspond to endpoints I create below.
+Now, on the template (`datasets.html`), I run the `datasets` list through a `Jinja` `for` loop and display each attribute in a HTML table. I also create buttons on each for training, editing and deleting that correspond to endpoints I create below.
 
 ##### Add
 
@@ -2423,7 +2197,7 @@ In the template (`add_dataset.html`), I have added validation in each input elem
 
 ##### Edit
 
-The route for this is quite similar to the Add Dataset webpage, but instead of adding a new record to the database, I retrieve the one I am editing (by it’s ID - hence the extra `/id` at the end of the endpoint URL definition) and modify it’s values, and then commit to the database.
+The route for this is quite similar to the Add Dataset webpage, but instead of adding a new record to the database, I retrieve the one I am editing (by its ID - hence the extra `/id` at the end of the endpoint URL definition) and modify its values, and then commit to the database.
 
 I also rename the directory name to the new name set.
 
@@ -2484,7 +2258,7 @@ This route has no corresponding template file since I have decided to keep delet
 
 Thus, unlike the previous two Add and Delete processes, dataset deletion can be done via a `GET` request to the page rather than a strict `POST` request.
 
-Since this is a potentially destructive action, I have added a second step to this. When clicking the delete button (that calls this endpoint), a modal (dialog box) pops up asking the user for confirmation of deletion.
+Since this is a potentially destructive action, I have added a second step to this. When clicking the delete button (that calls this endpoint), a modal (dialog box) pops up asking the user for confirmation of the deletion.
 
 #### Training
 
@@ -2501,7 +2275,7 @@ The template for setup (`training_setup.html`) is essentially a long form. The �
 
 ##### Training and Result
 
-If instead the request has method `POST` I will train the dataset with the parameters that the user has set and then serve the user the page with the training results on it.
+If instead, the request has method `POST` I will train the dataset with the parameters that the user has set and then serve the user the page with the training results on it.
 
 On receiving data from the form in a `POST` request, the program will:
 
@@ -2509,7 +2283,7 @@ On receiving data from the form in a `POST` request, the program will:
 2. Add two key/value pairs for the dataset directory and model directory into the config dictionary
    - Model name should be generated along the name scheme:
      `[origin dataset name]_[incremental number].h5`
-   - So if there are multiple models from the same dataset, for example `test_dataset` - perhaps where each model was trained with different parameters - the name scheme could be `test_dataset_1.h5` and then `test_dataset_2.h5` for the next one.
+   - So if there are multiple models from the same dataset, for example, `test_dataset` - perhaps where each model was trained with different parameters - the naming scheme could be `test_dataset_1.h5` and then `test_dataset_2.h5` for the next one.
    - This is done with a while loop.
 3. Convert the config dictionary to JSON format
 4. Dump this JSON into the `config.json` file on disk
@@ -2636,7 +2410,7 @@ def quit(self):
     self.process.terminate() # Exit subprocess if GUI is closed
 ```
 
-Then, I would replace all process related statements in the routing function with a simple `trainer = Trainer()`.
+Then, I would replace all process-related statements in the routing function with a simple `trainer = Trainer()`.
 
 Although reading real-time output would not be as simple as changing the list passed into the template rendering call to the object attribute `trainer.output`.
 
@@ -2652,9 +2426,9 @@ The backend is almost identical to `train.py` from the standalone system.
 
 It has been modified to read the parameters (including the input/dataset directory and output/model directory) from the `config.json` text file.
 
-This is done by reading all contents from the text file and converting it to a dictionary, and setting each parameter equal to that dictionary’s key with the same name as the variable.
+This is done by reading all contents from the text file and converting it to a dictionary and setting each parameter equal to that dictionary’s key with the same name as the variable.
 
-The augmenter class has also been modified to only apply an augmentation if that augmentation has been enabled in the config (by adding an `and` and a second conditional to the `if` statements in the public interface function).
+The augmenter class has also been modified to only apply an augmentation if that augmentation has been enabled in the config (by adding a second conditional to the `if` statements in the public interface function).
 
 The backend also does not output the model architecture summary (since this is the same each time).
 
@@ -2676,7 +2450,7 @@ There is no manual add functionality for models since the adding can only be don
 
 Here, similarly to the dataset manager, I want to query the `Models` table in the database for all models and list them out in a table.
 
-The query for this is not as simple as that of the dataset manager page, since I also want to display the origin dataset of that model (even though it is obvious by the default set name, if the user changes it, I want this to be visible). The one-to-many relationship defined in the database is made user of here. I query for both the Models and the Datasets, **left-joining on the Models**. This returns a list of tuples that I can reference in my web template.
+The query for this is not as simple as that of the dataset manager page, since I also want to display the origin dataset of that model (even though it is obvious by the default set name, if the user changes it, I want this to be visible). The one-to-many relationship defined in the database is made use of here. I query for both the Models and the Datasets, **left-joining on the Models**. This returns a list of tuples that I can reference in my web template.
 
 ```python
 '''Routes'''
@@ -2691,7 +2465,7 @@ The template (`models.html`) again loops through each model and displays them as
 
 ##### Edit
 
-This route quite similar to the Edit Datasets route, but again uses a left-join on the query in order to display information on the origin dataset on the edit page. This is different to the image in the [Design](#Design) layout section (where the parameters were shown in straight JSON on the MM) but in my opinion this makes the Model Manager look cleaner.
+This route quite similar to the Edit Datasets route, but again uses a left-join on the query in order to display information on the origin dataset on the edit page. This is different from the image in the [Design](#Design) layout section (where the parameters were shown in straight JSON on the MM) but in my opinion, this makes the Model Manager look cleaner.
 
 I also get a list of models from the `models` folder and pass this in for the autocomplete functionality in the name field inside the form.
 
@@ -2962,7 +2736,7 @@ This is used as an iterator during this driving process that catches an Empty er
 
 Running the backend to actually drive the vehicle turned out to not be as simple as running that code in this driver program.
 
-This is because the GUI has it’s own loop, and the driver also runs it’s own loop.
+This is because the GUI has it’s own loop, and the driver also runs its own loop.
 
 If I had chosen to place the backend code inside this program, once the user clicks the start button, the driving code would run, and (assuming there are no errors) the vehicle will be controlled in the simulator. However, this would break the app’s `mainloop` so the user interface would freeze up until the user forcefully shut the program, which is not ideal.
 
@@ -2970,7 +2744,7 @@ The alternative approach was to run the backend script from inside this driver s
 
 The end-goal to achieve this would require the backend script to run simultaneously with the application script, and interface the output of that backend program into the driving script.
 
-Since this is a concurrency task, I utilised python’s threading capabilities and a queue data structure to achieve near real-time paralellism between the two scripts.
+Since this is a concurrency task, I utilised python’s threading capabilities and a queue data structure to achieve near real-time parallellism between the two scripts.
 
 The (loose) pseudocode for this was:
 
@@ -3064,14 +2838,14 @@ I highlight here discrepancies between the original [Design](#Design) diagrams a
 
 There are some layout changes in the implementation:
 
-- The monitor opens in a new window rather than in a main app frame - this is required for threading to function properly.
+- The monitor opens in a new window rather than in the main app frame - this is required for threading to function properly.
 - There is no stop button, and the user must instead close the Monitor tab to stop driving.
 - I decided not to display the current speed since this is already visible in the simulator.
 - The steering displays as a number value instead of a dynamically rotating image, reasons for which are discussed below:
 
 The steering wheel, as designed, should have been a rotating image so that the GUI better visualises the steering angle.
 
-A portion of my attempt is below, where I managed to utilise the `Pillow` image manpulation library to rotate and display an image within a Tkinter label.
+A portion of my attempt is below, where I managed to utilise the `Pillow` image manipulation library to rotate and display an image within a Tkinter label.
 
 ```python
 from PIL import ImageTk, Image # Image manipulation
@@ -3120,7 +2894,7 @@ It is worth noting that the accuracy of the model I train below is not necessari
 
 Three separate datasets of 5 (joystick controlled) laps on Tracks 1, 2 and 3 are used to train three models, all with default training and augmentation parameters.
 
-I reached final average accuracies (between training and validation) :
+Finally, I reached average accuracies (between training and validation) :
 
 - On the Track 1 dataset trained model, 96.88%
 - On the Track 2 dataset trained model, 96.45%
@@ -3139,9 +2913,9 @@ Training this model with default parameters, on average, took:
 
 After approximately 20 different models, each having modified training parameters and/or using a different driving dataset, I developed an idea of which parameters affected different factors in qualitative amounts.
 
-This trial and error testing was also the method I used to obtain my default training hyperparameters, although these are certainly not perfect and marginally better performance could be gained with more tuning, however this may be at the expense of far longer training time.
+This trial and error testing was also the method I used to obtain my default training hyperparameters, although these are certainly not perfect and marginally better performance could be gained with more tuning, however, this may be at the expense of far longer training time.
 
-I found that, for dataset recording:
+I found that for dataset recording:
 
 - 5 laps was a good minimum size for the dataset.
   - Some models trained on even only 1 lap of driving were surprisingly capable on their own track.
@@ -3170,7 +2944,7 @@ The most significant parameters for the *driving performance* of the model were:
 
 #### Test Plan
 
-In this portion of testing, I will be ensuring that my driving program is able to connect to the simulator and actually control the vehicle.
+In this portion of the testing, I will be ensuring that my driving program is able to connect to the simulator and actually control the vehicle.
 
 I will watch through the “optimal” model generated in the training performance testing above run on all three tracks, and measure approximately how far the AV was able to progress on each one.
 
@@ -3194,11 +2968,11 @@ Another reason could be that Track 2 starts with a road running parallel to the 
 
 #### Other Comments
 
-I also found that, depending on the hardware the driving program is running on, the same model may experience higher or lower driving performance. My theory is that computers with faster processors (specifically the CPU clock speed) may be able to preprocess an image and infer a steering angle from the model at a faster rate than those with slower processors, which leads to the driver ‘reacting’ faster.
+I also found that depending on the hardware the driving program is running on, the same model may experience higher or lower driving performance. My theory is that computers with faster processors (specifically the CPU clock speed) may be able to preprocess an image and infer a steering angle from the model at a faster rate than those with slower processors, which leads to the driver ‘reacting’ faster.
 
 To normalise this, I could have tried to fix a rate at which the program produces and sends a steering command at instead of the asynchronous implementation (running the process whenever an image is received from the simulator) I used here.
 
-In another test, I also tried driving a few laps around Track 3 while remaining only in the right lane, and trained a model with this dataset also on my default parameters. The model was actually able to stay in one lane while driving on Track 3, which shows that the model is even able to learn features such as centre lane lines too. However, this model had far worse generality on other (only one-lane) tracks when compared to the best-case discussed above.
+In another test, I also tried driving a few laps around Track 3 while remaining only in the right lane and trained a model with this dataset also on my default parameters. The model was actually able to stay in one lane while driving on Track 3, which shows that the model is even able to learn features such as centre lane lines too. However, this model had far worse generality on other (only one-lane) tracks when compared to the best-case discussed above.
 
 ### Objectives
 
@@ -3220,56 +2994,56 @@ The interface testing will implicitly test any modifications to the backend rega
 
 ### Interface Tests
 
-Navigation tests solely consider flow between different views on the application.
+Interface navigation tests solely consider flow between different views on the application.
 
 A table summarising all program navigation tests is below:
 
-| Test Code      | Webpage         | Button                                       | Expectation                      | Results                                 |
-| -------------- | --------------- | -------------------------------------------- | -------------------------------- | --------------------------------------- |
-| **TN1**a       | Base (All)      | (in navbar) <kbd>Datasets</kbd>              | Goes to “*Dataset Manager*” page | :white_check_mark::white_check_mark::x: |
-| **TN1**b       | Base (All)      | (in navbar) <kbd>Models</kbd>                | Goes to “*Model Manager*” page   | :white_check_mark::white_check_mark::x: |
-| **TN2**a       | Home            | <kbd>Datasets</kbd>                          | Goes to “*Dataset Manager*” page | :white_check_mark::white_check_mark::x: |
-| **TN2**b       | Home            | <kbd>Models</kbd>                            | Goes to “*Model Manager*” page   | :white_check_mark::white_check_mark::x: |
-| **TN3**a       | Dataset Manager | <kbd>Add Dataset</kbd>                       | Goes to “*Add Dataset*” page     | :white_check_mark::white_check_mark::x: |
-| **TN3**b       | Dataset Manager | :memo: /<kbd>Edit Dataset</kbd>              | Goes to “*Edit Dataset*” page    | :white_check_mark::white_check_mark::x: |
-| **TN3**c (i)   | Dataset Manager | :wastebasket: /​<kbd>Delete Dataset</kbd>     | Displays modal                   | :white_check_mark::white_check_mark::x: |
-| **TN3**c (ii)  | Dataset Manager | (in modal) <kbd>Close</kbd>                  | Closes modal                     | :white_check_mark::white_check_mark::x: |
-| **TN3**c (iii) | Dataset Manager | (in modal) <kbd>Confirm</kbd>                | Goes to “*Dataset Manager*” page | :white_check_mark::white_check_mark::x: |
-| **TN3**d       | Dataset Manager | :arrow_forward: /<kbd>Train on Dataset</kbd> | Goes to “*Training Setup*” page  | :white_check_mark::white_check_mark::x: |
-| **TN4**a       | Add Dataset     | <kbd>Back</kbd>                              | Goes to “*Dataset Manager*” page | :white_check_mark::white_check_mark::x: |
-| **TN4**b       | Add Dataset     | <kbd>Submit</kbd>                            | Goes to “*Dataset Manager*” page | :white_check_mark::white_check_mark::x: |
-| **TN5**a       | Edit Dataset    | <kbd>Back</kbd>                              | Goes to “*Dataset Manager*” page | :white_check_mark::white_check_mark::x: |
-| **TN5**b       | Edit Dataset    | <kbd>Update</kbd>                            | Goes to “*Dataset Manager*” page | :white_check_mark::white_check_mark::x: |
-| **TN6**        | Training Setup  | <kbd>Start Training</kbd>                    | Goes to “*Training Result*” page | :white_check_mark::white_check_mark::x: |
-| **TN7**        | Training Result | <kbd>Finish</kbd>                            | Goes to “*Model Manager*” page   | :white_check_mark::white_check_mark::x: |
-| **TN8**a       | Model Manager   | :memo: /<kbd>Edit Model</kbd>                | Goes to “*Edit Model*” page      | :white_check_mark::white_check_mark::x: |
-| **TN8**b (i)   | Model Manager   | :wastebasket: /<kbd>Delete Model</kbd>       | Displays modal                   | :white_check_mark::white_check_mark::x: |
-| **TN8**b (ii)  | Model Manager   | (in modal) <kbd>Close</kbd>                  | Closes modal                     | :white_check_mark::white_check_mark::x: |
-| **TN8**b (iii) | Model Manager   | (in modal) <kbd>Confirm</kbd>                | Goes to “*Model Manager*” page   | :white_check_mark::white_check_mark::x: |
-| **TN9**a       | Edit Model      | <kbd>Back</kbd>                              | Goes to “*Model Manager*” page   | :white_check_mark::white_check_mark::x: |
-| **TN9**b       | Edit Model      | <kbd>Update</kbd>                            | Goes to “*Model Manager*” page   | :white_check_mark::white_check_mark::x: |
+| Test Code      | Webpage         | Button                                       | Expectation                      | Results            |
+| -------------- | --------------- | -------------------------------------------- | -------------------------------- | ------------------ |
+| **TN1**a       | Base (All)      | (in navbar) <kbd>Datasets</kbd>              | Goes to “*Dataset Manager*” page | :white_check_mark: |
+| **TN1**b       | Base (All)      | (in navbar) <kbd>Models</kbd>                | Goes to “*Model Manager*” page   | :white_check_mark: |
+| **TN2**a       | Home            | <kbd>Datasets</kbd>                          | Goes to “*Dataset Manager*” page | :white_check_mark: |
+| **TN2**b       | Home            | <kbd>Models</kbd>                            | Goes to “*Model Manager*” page   | :white_check_mark: |
+| **TN3**a       | Dataset Manager | <kbd>Add Dataset</kbd>                       | Goes to “*Add Dataset*” page     | :white_check_mark: |
+| **TN3**b       | Dataset Manager | :memo: /<kbd>Edit Dataset</kbd>              | Goes to “*Edit Dataset*” page    | :white_check_mark: |
+| **TN3**c (i)   | Dataset Manager | :wastebasket: /​<kbd>Delete Dataset</kbd>     | Displays modal                   | :white_check_mark: |
+| **TN3**c (ii)  | Dataset Manager | (in modal) <kbd>Close</kbd>                  | Closes modal                     | :white_check_mark: |
+| **TN3**c (iii) | Dataset Manager | (in modal) <kbd>Confirm</kbd>                | Goes to “*Dataset Manager*” page | :white_check_mark: |
+| **TN3**d       | Dataset Manager | :arrow_forward: /<kbd>Train on Dataset</kbd> | Goes to “*Training Setup*” page  | :white_check_mark: |
+| **TN4**a       | Add Dataset     | <kbd>Back</kbd>                              | Goes to “*Dataset Manager*” page | :white_check_mark: |
+| **TN4**b       | Add Dataset     | <kbd>Submit</kbd>                            | Goes to “*Dataset Manager*” page | :white_check_mark: |
+| **TN5**a       | Edit Dataset    | <kbd>Back</kbd>                              | Goes to “*Dataset Manager*” page | :white_check_mark: |
+| **TN5**b       | Edit Dataset    | <kbd>Update</kbd>                            | Goes to “*Dataset Manager*” page | :white_check_mark: |
+| **TN6**        | Training Setup  | <kbd>Start Training</kbd>                    | Goes to “*Training Result*” page | :white_check_mark: |
+| **TN7**        | Training Result | <kbd>Finish</kbd>                            | Goes to “*Model Manager*” page   | :white_check_mark: |
+| **TN8**a       | Model Manager   | :memo: /<kbd>Edit Model</kbd>                | Goes to “*Edit Model*” page      | :white_check_mark: |
+| **TN8**b (i)   | Model Manager   | :wastebasket: /<kbd>Delete Model</kbd>       | Displays modal                   | :white_check_mark: |
+| **TN8**b (ii)  | Model Manager   | (in modal) <kbd>Close</kbd>                  | Closes modal                     | :white_check_mark: |
+| **TN8**b (iii) | Model Manager   | (in modal) <kbd>Confirm</kbd>                | Goes to “*Model Manager*” page   | :white_check_mark: |
+| **TN9**a       | Edit Model      | <kbd>Back</kbd>                              | Goes to “*Model Manager*” page   | :white_check_mark: |
+| **TN9**b       | Edit Model      | <kbd>Update</kbd>                            | Goes to “*Model Manager*” page   | :white_check_mark: |
 
 ### Operation Tests
 
 Operation tests consider the functions of the program and the connection between the interface and backend.
 
-| Test Code | Webpage         | Element                         | Expectation                                                  | Results                                 |
-| --------- | --------------- | ------------------------------- | ------------------------------------------------------------ | --------------------------------------- |
-| **TO1**   | Dataset Manager | Datasets table                  | Show all datasets in database                                | :white_check_mark::white_check_mark::x: |
-| **TO2**a  | Add Dataset     | Dataset folder name input field | On click, show autocomplete list with all datasets subfolder names | :white_check_mark::white_check_mark::x: |
-| **TO2**b  | Add Dataset     | <kbd>Submit</kbd>               | Show as new entry in Dataset Manager table, created new folder on disk | :white_check_mark::white_check_mark::x: |
-| **TO3**a  | Edit Dataset    | All input fields                | Load existing data into fields                               | :white_check_mark::white_check_mark::x: |
-| **TO3**b  | Edit Dataset    | <kbd>Update</kbd>               | Updated entry shown in table with new field contents, renamed on disk | :white_check_mark::white_check_mark::x: |
-| **TO4**   | Delete Dataset  | (in modal) <kbd>Confirm</kbd>   | No longer shown as entry in Dataset Manager table, deleted from disk | :white_check_mark::white_check_mark::x: |
-| **TO5**a  | Training Setup  | All input fields                | Load default values into fields                              | :white_check_mark::white_check_mark::x: |
-| **TO5**b  | Training Setup  | <kbd>Start Training</kbd>       | Train model in backend with set parameters                   | :white_check_mark::white_check_mark::x: |
-| **TO6**a  | Training Result | Training Output                 | Display full, formatted console output for training          | :white_check_mark::white_check_mark::x: |
-| **TO6**b  | Training Result | Loss Plot                       | Show correct loss plot graph                                 | :white_check_mark::white_check_mark::x: |
-| **TO6**c  | Training Result | N/A                             | Show model as new entry in Model Manager table, new file on disk | :white_check_mark::white_check_mark::x: |
-| **TO7**   | Model Manager   | Models table                    | Show all models in database                                  | :white_check_mark::white_check_mark::x: |
-| **TO8**a  | Edit Model      | All input fields, info          | Load existing data into fields, show correct parent dataset information and model training parameters | :white_check_mark::white_check_mark::x: |
-| **TO8**b  | Edit Model      | <kbd>Update</kbd>               | Updated entry shown in table with new field contents, renamed on disk | :white_check_mark::white_check_mark::x: |
-| **TO9**   | Delete Model    | (in modal) <kbd>Confirm</kbd>   | No longer shown as entry in Model Manager table, deleted from disk | :white_check_mark::white_check_mark::x: |
+| Test Code | Webpage         | Element                         | Expectation                                                  | Results            |
+| --------- | --------------- | ------------------------------- | ------------------------------------------------------------ | ------------------ |
+| **TO1**   | Dataset Manager | Datasets table                  | Show all datasets in database                                | :white_check_mark: |
+| **TO2**a  | Add Dataset     | Dataset folder name input field | On click, show autocomplete list with all datasets subfolder names | :white_check_mark: |
+| **TO2**b  | Add Dataset     | <kbd>Submit</kbd>               | Show as new entry in Dataset Manager table, created new folder on disk | :white_check_mark: |
+| **TO3**a  | Edit Dataset    | All input fields                | Load existing data into fields                               | :white_check_mark: |
+| **TO3**b  | Edit Dataset    | <kbd>Update</kbd>               | Updated entry shown in table with new field contents, renamed on disk | :white_check_mark: |
+| **TO4**   | Delete Dataset  | (in modal) <kbd>Confirm</kbd>   | No longer shown as entry in Dataset Manager table, deleted from disk | :white_check_mark: |
+| **TO5**a  | Training Setup  | All input fields                | Load default values into fields                              | :white_check_mark: |
+| **TO5**b  | Training Setup  | <kbd>Start Training</kbd>       | Train model in backend with set parameters                   | :white_check_mark: |
+| **TO6**a  | Training Result | Training Output                 | Display full, formatted console output for training          | :white_check_mark: |
+| **TO6**b  | Training Result | Loss Plot                       | Show correct loss plot graph                                 | :white_check_mark: |
+| **TO6**c  | Training Result | N/A                             | Show model as new entry in Model Manager table, new file on disk | :white_check_mark: |
+| **TO7**   | Model Manager   | Models table                    | Show all models in database                                  | :white_check_mark: |
+| **TO8**a  | Edit Model      | All input fields, info          | Load existing data into fields, show correct parent dataset information and model training parameters | :white_check_mark: |
+| **TO8**b  | Edit Model      | <kbd>Update</kbd>               | Updated entry shown in table with new field contents, renamed on disk | :white_check_mark: |
+| **TO9**   | Delete Model    | (in modal) <kbd>Confirm</kbd>   | No longer shown as entry in Model Manager table, deleted from disk | :white_check_mark: |
 
 ### Validation Tests
 
@@ -3349,19 +3123,19 @@ The interface testing will implicitly test any modifications to the backend rega
 
 ### Interface Tests
 
-Navigation tests solely considers flow between different views on the application.
+Interface navigation tests solely consider flow between different views on the application.
 
 A table summarising all program navigation tests is below:
 
-| Test Code | View            | Button                | Expected Result                  | Results                                 |
-| --------- | --------------- | --------------------- | -------------------------------- | --------------------------------------- |
-| **DN1**a  | Load Model      | <kbd>Close</kbd>      | Exits program                    | :white_check_mark::white_check_mark::x: |
-| **DN1**b  | Load Model      | <kbd>Load Model</kbd> | Opens "*File Dialog*” window     | :white_check_mark::white_check_mark::x: |
-| **DN2**   | File Dialog     | <kbd>Open</kbd>       | Goes to "*Set Speed*" frame      | :white_check_mark::white_check_mark::x: |
-| **DN3**a  | Set Speed       | <kbd>Close</kbd>      | Exits program                    | :white_check_mark::white_check_mark::x: |
-| **DN3**b  | Set Speed       | <kbd>Back</kbd>       | Goes to "*Load Model*" frame     | :white_check_mark::white_check_mark::x: |
-| **DN3**c  | Set Speed       | <kbd>Start</kbd>      | Opens "*Driving Monitor*” window | :white_check_mark::white_check_mark::x: |
-| **DN4**d  | Driving Monitor | <kbd>Close</kbd>      | Closes “*Driver Monitor*” window | :white_check_mark::white_check_mark::x: |
+| Test Code | View            | Button                | Expected Result                  | Results            |
+| --------- | --------------- | --------------------- | -------------------------------- | ------------------ |
+| **DN1**a  | Load Model      | <kbd>Close</kbd>      | Exits program                    | :white_check_mark: |
+| **DN1**b  | Load Model      | <kbd>Load Model</kbd> | Opens "*File Dialog*” window     | :white_check_mark: |
+| **DN2**   | File Dialog     | <kbd>Open</kbd>       | Goes to "*Set Speed*" frame      | :white_check_mark: |
+| **DN3**a  | Set Speed       | <kbd>Close</kbd>      | Exits program                    | :white_check_mark: |
+| **DN3**b  | Set Speed       | <kbd>Back</kbd>       | Goes to "*Load Model*" frame     | :white_check_mark: |
+| **DN3**c  | Set Speed       | <kbd>Start</kbd>      | Opens "*Driving Monitor*” window | :white_check_mark: |
+| **DN4**d  | Driving Monitor | <kbd>Close</kbd>      | Closes “*Driver Monitor*” window | :white_check_mark: |
 
 I conclude that navigation of the Driver application is fully functional.
 
@@ -3369,12 +3143,12 @@ I conclude that navigation of the Driver application is fully functional.
 
 Operation tests consider the functions of the program and the connection between the interface and backend.
 
-| Test Code | View           | Element                  | Expectation                                       | Results                                 |
-| --------- | -------------- | ------------------------ | ------------------------------------------------- | --------------------------------------- |
-| **DO1**   | Set Speed      | <kbd>Start</kbd>         | Starts up backend process and drives in simulator | :white_check_mark::white_check_mark::x: |
-| **DO2**   | N/A            | N/A                      | Driver operates at speed below/at speed limit     | :white_check_mark::white_check_mark::x: |
-| **DO3**   | Driver Monitor | Throttle, Steering Angle | Real-time output                                  | :white_check_mark::white_check_mark::x: |
-| **DO4**   | Driver Monitor | <kbd>Close</kbd>         | Stops driving                                     | :white_check_mark::white_check_mark::x: |
+| Test Code | View           | Element                  | Expectation                                       | Results            |
+| --------- | -------------- | ------------------------ | ------------------------------------------------- | ------------------ |
+| **DO1**   | Set Speed      | <kbd>Start</kbd>         | Starts up backend process and drives in simulator | :white_check_mark: |
+| **DO2**   | N/A            | N/A                      | Driver operates at speed below/at speed limit     | :white_check_mark: |
+| **DO3**   | Driver Monitor | Throttle, Steering Angle | Real-time output                                  | :white_check_mark: |
+| **DO4**   | Driver Monitor | <kbd>Close</kbd>         | Stops driving                                     | :white_check_mark: |
 
 The program is able to drive the vehicle successfully.
 
@@ -3454,7 +3228,7 @@ I could have tried replacing the network architecture (exactly the one used in N
 
 Currently, the system takes in one input image and produces one steering angle.
 
-I have datasets comprised of images from left, right and centre images, which I serialise (offsetting the steering angle of the left and right images to align with the centre camera) and then train individually.
+I have datasets comprised of images from left, right and centre images, which I serialise (offsetting the steering angle of the left and right images to align with the centre camera) and then train as individual data points.
 
 If I modified the input layer of my CNN architecture to take three images simultaneously and both train and infer with this, I may be able to enable better performance since I am properly fusing all sensors available to me in the simulator.
 

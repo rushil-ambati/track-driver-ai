@@ -18,7 +18,7 @@ import cv2 # Computer Vision
 
 import os
 os.environ["TF_CPP_MIN_LOG_LEVEL"] = str(3)
-os.environ['TF_FORCE_GPU_ALLOW_GROWTH'] = 'true'
+# os.environ['TF_FORCE_GPU_ALLOW_GROWTH'] = 'true'
 
 '''Parameters'''
 with open("data.txt", "r") as f:
