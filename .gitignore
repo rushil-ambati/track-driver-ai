@@ -128,10 +128,4 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
-# Custom
-trainer/datasets/*
-trainer/models/*
-trainer/static/loss.png
-trainer/trainer.db
-
 .DS_Store
