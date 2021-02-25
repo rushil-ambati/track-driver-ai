@@ -128,4 +128,11 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
+# Custom
+trainer/datasets/*
+!trainer/datasets/.gitkeep
+
+trainer/models/*
+!trainer/models/.gitkeep
+
 .DS_Store
