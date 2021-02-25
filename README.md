@@ -28,7 +28,7 @@ Run simulator executable, select graphics/control options (joystick is preferabl
 
 
 ### Trainer
-Create a blank database:
+Create a blank database (there's one in the folder already):
 ```bash
 cd trainer
 python
