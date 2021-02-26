@@ -65,12 +65,11 @@ Go to the simulator.
 
 
 ### Training
-I have placed two 'test models' inside the 'standalone system' directory.
-`test_model_1.h5` has been trained for Track 1.
-`test_model_2.h5` has been trained to drive on the right lane on Track 3.
+I have placed two 'test models' inside the 'standalone system' directory:
+- `test_model_1.h5` has been trained for Track 1.
+- `test_model_2.h5` has been trained to drive on the right lane on Track 3.
 
-If you would like to train your own models, instructions are as follows:
-Go to the Trainer app (by default, it should be [here](http://127.0.0.1:5000/)).
+To train your own model, open the Trainer app (by default, it should be [here](http://127.0.0.1:5000/)).
 1. Go to the "Datasets" page and add driving datasets.
 2. *(Optional)* Add comments on the quality of driving in that recording or other details for future reference.
 3. Chose one to train on and click the "Train" button.
