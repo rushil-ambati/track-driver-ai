@@ -136,3 +136,7 @@ trainer/models/*
 !trainer/models/.gitkeep
 
 .DS_Store
+
+# Custom
+.vscode
+.sim
