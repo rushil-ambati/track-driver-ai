@@ -15,7 +15,7 @@ Clone this repository:
 git clone https://github.com/rushil-ambati/track-driver-ai
 ```
 
-Then install dependencies:
+Then install dependencies (this system works best with Python 3.7 or 3.8):
 ```bash
 cd track-driver-ai
 pip install -r requirements.txt
