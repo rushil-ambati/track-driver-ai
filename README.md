@@ -4,6 +4,8 @@ Track Driver AI is a system that allows for easy creation, management and usage 
 
 [Documentation](docs/docs.md)
 
+[Rushil Ambati - Self-Driving Cars: A Crash Course | Inspire Lecture](https://www.youtube.com/watch?v=rstYefrdCvo)
+
 ## Installation
 
 ### Simulator
